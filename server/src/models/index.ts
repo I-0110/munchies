@@ -1,3 +1,3 @@
-import Profile from './Profile.js';
+import Profile from './User.js';
 
 export { Profile };
