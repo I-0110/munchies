@@ -2,17 +2,18 @@ import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 // Define an interface for the Profile document
-interface IProfile extends Document {
+interface IUser extends Document {
   _id: string;
   name: string;
   email: string;
   password:string;
-  skills: string[];
+  ingredients: string[];
+  recipes: string[];
   isCorrectPassword(password: string): Promise<boolean>;
 }
 
 // Define the schema for the Profile document
-const profileSchema = new Schema<IProfile>(
+const userSchema = new Schema<IUser>(
   {
     name: {
       type: String,
@@ -31,7 +32,13 @@ const profileSchema = new Schema<IProfile>(
       required: true,
       minlength: 5,
     },
-    skills: [
+    ingredients: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+    recipes: [
       {
         type: String,
         trim: true,
@@ -46,7 +53,7 @@ const profileSchema = new Schema<IProfile>(
 );
 
 // set up pre-save middleware to create password
-profileSchema.pre<IProfile>('save', async function (next) {
+userSchema.pre<IUser>('save', async function (next) {
   if (this.isNew || this.isModified('password')) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
@@ -56,10 +63,10 @@ profileSchema.pre<IProfile>('save', async function (next) {
 });
 
 // compare the incoming password with the hashed password
-profileSchema.methods.isCorrectPassword = async function (password: string): Promise<boolean> {
+userSchema.methods.isCorrectPassword = async function (password: string): Promise<boolean> {
   return bcrypt.compare(password, this.password);
 };
 
-const Profile = model<IProfile>('Profile', profileSchema);
+const User = model<IUser>('User', userSchema);
 
-export default Profile;
+export default User;

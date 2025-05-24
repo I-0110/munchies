@@ -12,11 +12,11 @@ const Header = () => {
       <div className="container flex-column justify-space-between-lg justify-center align-center text-center">
         <Link className="text-dark" to="/">
           <h1 className="m-0" style={{ fontSize: '3rem' }}>
-            Tech Friends
+            Munchies
           </h1>
         </Link>
         <p className="m-0" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
-          Meet your new programming pals.
+          Plan your next meal. One meal at the time!
         </p>
         <div>
           {Auth.loggedIn() ? (
@@ -34,7 +34,7 @@ const Header = () => {
                 Login
               </Link>
               <Link className="btn btn-lg btn-light m-2" to="/signup">
-                Signup
+                Register
               </Link>
             </>
           )}

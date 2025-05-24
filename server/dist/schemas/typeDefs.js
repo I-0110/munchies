@@ -1,36 +1,38 @@
 const typeDefs = `
-  type Profile {
+  type User {
     _id: ID
     name: String
     email: String
     password: String
-    skills: [String]!
+    ingredients: [String]!
+    recipes: [String]!
   }
 
   type Auth {
     token: ID!
-    profile: Profile
+    user: User
   }
   
-  input ProfileInput {
+  input UserInput {
     name: String!
     email: String!
     password: String!
   }
 
   type Query {
-    profiles: [Profile]!
-    profile(profileId: ID!): Profile
-    me: Profile
+    users: [User]!
+    user(userId: ID!): User
+    me: User
   }
 
   type Mutation {
-    addProfile(input: ProfileInput!): Auth
+    addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
-
-    addSkill(profileId: ID!, skill: String!): Profile
-    removeProfile: Profile
-    removeSkill(skill: String!): Profile
+    addIngredient(userId: ID!, ingredient: String!): User
+    addRecipes(userId: ID!, recipes: String!): User
+    removeUser: User
+    removeIngredient(ingredient: String!): User
+    removeRecipes(recipes: String!): User
   }
 `;
 export default typeDefs;
