@@ -35,5 +35,4 @@ const typeDefs = `
     removeRecipes(recipes: String!): User
   }
 `;
-
 export default typeDefs;

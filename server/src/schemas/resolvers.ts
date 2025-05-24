@@ -1,18 +1,19 @@
-import { Profile } from '../models/index.js';
+import { User } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
-interface Profile {
+interface User {
   _id: string;
   name: string;
   email: string;
   password: string;
-  skills: string[];
+  ingredients: string[];
+  recipes: string[];
 }
 
-interface ProfileArgs {
-  profileId: string;
+interface UserArgs {
+  userId: string;
 }
 
-interface AddProfileArgs {
+interface AddUserArgs {
   input:{
     name: string;
     email: string;
@@ -20,59 +21,69 @@ interface AddProfileArgs {
   }
 }
 
-interface AddSkillArgs {
-  profileId: string;
-  skill: string;
+interface AddIngredientsArgs {
+  userId: string;
+  ingredients: string;
 }
 
-interface RemoveSkillArgs {
-  profileId: string;
-  skill: string;
+interface RemoveIngredientsArgs {
+  userId: string;
+  ingredients: string;
+}
+
+interface AddRecipesArgs {
+  userId: string;
+  recipes: string;
+}
+
+interface RemoveRecipesArgs {
+  userId: string;
+  recipes: string;
 }
 
 interface Context {
-  user?: Profile;
+  user?: User;
 }
 
 const resolvers = {
   Query: {
-    profiles: async (): Promise<Profile[]> => {
-      return await Profile.find();
+    users: async (): Promise<User[]> => {
+      return await User.find();
     },
-    profile: async (_parent: any, { profileId }: ProfileArgs): Promise<Profile | null> => {
-      return await Profile.findOne({ _id: profileId });
+    user: async (_parent: any, { userId }: UserArgs): Promise<User | null> => {
+      return await User.findOne({ _id: userId });
     },
-    me: async (_parent: any, _args: any, context: Context): Promise<Profile | null> => {
+    me: async (_parent: any, _args: any, context: Context): Promise<User | null> => {
       if (context.user) {
-        return await Profile.findOne({ _id: context.user._id });
+        return await User.findOne({ _id: context.user._id });
       }
       throw AuthenticationError;
     },
   },
   Mutation: {
-    addProfile: async (_parent: any, { input }: AddProfileArgs): Promise<{ token: string; profile: Profile }> => {
-      const profile = await Profile.create({ ...input });
-      const token = signToken(profile.name, profile.email, profile._id);
-      return { token, profile };
+    addUser: async (_parent: any, { input }: AddUserArgs): Promise<{ token: string; user: User }> => {
+      const user = await User.create({ ...input });
+      const token = signToken(user.name, user.email, user._id);
+      return { token, user };
     },
-    login: async (_parent: any, { email, password }: { email: string; password: string }): Promise<{ token: string; profile: Profile }> => {
-      const profile = await Profile.findOne({ email });
-      if (!profile) {
+    login: async (_parent: any, { email, password }: { email: string; password: string }): Promise<{ token: string; user: User }> => {
+      const user = await User.findOne({ email });
+      if (!user) {
         throw AuthenticationError;
       }
-      const correctPw = await profile.isCorrectPassword(password);
+      const correctPw = await user.isCorrectPassword(password);
       if (!correctPw) {
         throw AuthenticationError;
       }
-      const token = signToken(profile.name, profile.email, profile._id);
-      return { token, profile };
+      const token = signToken(user.name, user.email, user._id);
+      return { token, user };
     },
-    addSkill: async (_parent: any, { profileId, skill }: AddSkillArgs, context: Context): Promise<Profile | null> => {
+    addIngredient: async (_parent: any, { userId, ingredients }: AddIngredientsArgs, context: Context): Promise<User | null> => {
       if (context.user) {
-        return await Profile.findOneAndUpdate(
-          { _id: profileId },
+        return await User.findOneAndUpdate(
+          { _id: userId },
           {
-            $addToSet: { skills: skill },
+            $addToSet: { ingredients: ingredients },
           },
           {
             new: true,
@@ -82,17 +93,42 @@ const resolvers = {
       }
       throw AuthenticationError;
     },
-    removeProfile: async (_parent: any, _args: any, context: Context): Promise<Profile | null> => {
+    addRecipes: async (_parent: any, { userId, recipes }: AddRecipesArgs, context: Context): Promise<User | null> => {
       if (context.user) {
-        return await Profile.findOneAndDelete({ _id: context.user._id });
+        return await User.findOneAndUpdate(
+          { _id: userId },
+          {
+            $addToSet: { recipes: recipes },
+          },
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
       }
       throw AuthenticationError;
     },
-    removeSkill: async (_parent: any, { skill }: RemoveSkillArgs, context: Context): Promise<Profile | null> => {
+    removeUser: async (_parent: any, _args: any, context: Context): Promise<User | null> => {
       if (context.user) {
-        return await Profile.findOneAndUpdate(
+        return await User.findOneAndDelete({ _id: context.user._id });
+      }
+      throw AuthenticationError;
+    },
+    removeIngredient: async (_parent: any, { ingredients }: RemoveIngredientsArgs, context: Context): Promise<User | null> => {
+      if (context.user) {
+        return await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { skills: skill } },
+          { $pull: { ingredients: ingredients } },
+          { new: true }
+        );
+      }
+      throw AuthenticationError;
+    },
+    removeRecipes: async (_parent: any, { recipes }: RemoveRecipesArgs, context: Context): Promise<User | null> => {
+      if (context.user) {
+        return await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { recipes: recipes } },
           { new: true }
         );
       }

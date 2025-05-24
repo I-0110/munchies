@@ -9,7 +9,7 @@ interface ExtendedJwt extends JwtPayload {
 };
 
 class AuthService {
-  getProfile() {
+  getUser() {
     return jwtDecode<ExtendedJwt>(this.getToken());
   }
 
