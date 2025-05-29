@@ -2,4 +2,4 @@ import User from './User.js'
 import Recipe from './Recipe.js'
 import Ingredient from './Ingredient.js'
 
-export { Profile };
+export { User, Recipe, Ingredient };
