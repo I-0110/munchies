@@ -2,28 +2,28 @@ import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 
-import { ADD_SKILL } from '../../utils/mutations';
+import { ADD_INGREDIENT } from '../../utils/mutations';
 
 import Auth from '../../utils/auth';
 
-interface SkillFormProps {
-  profileId: string;
+interface IngredientFormProps {
+  userId: string;
 }
 
-const SkillForm: React.FC<SkillFormProps> = ({ profileId }) => {
-  const [skill, setSkill] = useState('');
+const IngredientForm: React.FC<IngredientFormProps> = ({ userId }) => {
+  const [ingredient, setIngredient] = useState('');
 
-  const [addSkill, { error }] = useMutation(ADD_SKILL);
+  const [addIngredient, { error }] = useMutation(ADD_INGREDIENT);
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     try {
-      await addSkill({
-        variables: { profileId, skill },
+      await addIngredient({
+        variables: { userId, ingredient },
       });
 
-      setSkill('');
+      setIngredient('');
     } catch (err) {
       console.error(err);
     }
@@ -31,7 +31,7 @@ const SkillForm: React.FC<SkillFormProps> = ({ profileId }) => {
 
   return (
     <div>
-      <h4>Endorse some more skills below.</h4>
+      <h4>Endorse some more ingredients below.</h4>
 
       {Auth.loggedIn() ? (
         <form
@@ -40,16 +40,16 @@ const SkillForm: React.FC<SkillFormProps> = ({ profileId }) => {
         >
           <div className="col-12 col-lg-9">
             <input
-              placeholder="Endorse some skills..."
-              value={skill}
+              placeholder="Add some ingredients..."
+              value={ingredient}
               className="form-input w-100"
-              onChange={(event) => setSkill(event.target.value)}
+              onChange={(event) => setIngredient(event.target.value)}
             />
           </div>
 
           <div className="col-12 col-lg-3">
             <button className="btn btn-info btn-block py-3" type="submit">
-              Endorse Skill
+              Add Ingredient!
             </button>
           </div>
           {error && (
@@ -60,7 +60,7 @@ const SkillForm: React.FC<SkillFormProps> = ({ profileId }) => {
         </form>
       ) : (
         <p>
-          You need to be logged in to endorse skills. Please{' '}
+          You need to be logged in to endorse ingredients. Please{' '}
           <Link to="/login">login</Link> or <Link to="/signup">signup.</Link>
         </p>
       )}
@@ -68,4 +68,4 @@ const SkillForm: React.FC<SkillFormProps> = ({ profileId }) => {
   );
 };
 
-export default SkillForm;
+export default IngredientForm;
