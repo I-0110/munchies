@@ -1,5 +1,6 @@
 import { User } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
+
 interface User {
   email: string;
   recipes: object[];
@@ -106,14 +107,14 @@ const resolvers = {
     },
     removeUser: async (_parent: any, _args: any, context: Context): Promise<User | null> => {
       if (context.user) {
-        return await User.findOneAndDelete({ _id: context.user._id });
+        return await User.findOneAndDelete({ email: context.user.email });
       }
       throw AuthenticationError;
     },
     removeIngredient: async (_parent: any, { ingredients }: RemoveIngredientsArgs, context: Context): Promise<User | null> => {
       if (context.user) {
         return await User.findOneAndUpdate(
-          { _id: context.user._id },
+          { email: context.user.email },
           { $pull: { ingredients: ingredients } },
           { new: true }
         );
@@ -123,7 +124,7 @@ const resolvers = {
     removeRecipes: async (_parent: any, { recipes }: RemoveRecipesArgs, context: Context): Promise<User | null> => {
       if (context.user) {
         return await User.findOneAndUpdate(
-          { _id: context.user._id },
+          { email: context.user.email },
           { $pull: { recipes: recipes } },
           { new: true }
         );
