@@ -14,8 +14,8 @@ export const ADD_USER = gql`
 `;
 
 export const ADD_INGREDIENT = gql`
-  mutation addIngredient($userId: ID!, $ingredient: String!) {
-    addIngredient(userId: $userId, ingredient: $ingredient) {
+  mutation addIngredient($userId: ID!, $calories: String!) {
+    addIngredient(userId: $userId, calories: $calories) {
       _id
       name
       calories
@@ -34,8 +34,8 @@ export const ADD_RECIPES = gql`
 `;
 
 export const LOGIN_USER = gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
+  mutation login($userId: String!, $username: String!) {
+    login(username: $name, password: $password) {
       token
       user {
         _id
@@ -50,7 +50,7 @@ export const REMOVE_INGREDIENT = gql`
     removeIngredient(ingredient: $ingredient) {
       _id
       username
-      ingredients
+      ingredient
     }
   }
 `;
@@ -60,8 +60,6 @@ export const REMOVE_RECIPES = gql`
     removeRecipes(recipes: $recipes) {
       _id
       username
-      email
-      password
       recipes
     }
   }
