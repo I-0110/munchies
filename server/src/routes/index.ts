@@ -1,6 +1,6 @@
 import express from 'express';
-import tmdbRouter from './tmdb/index.js'
-import FDCRouter from './fdc/index.js';
+import tmdbRouter from './TMDB/index.js'
+import FDCRouter from './FDC/index.js';
 
 const router = express.Router();
 
