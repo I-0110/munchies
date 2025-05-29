@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 // Define an interface for the Profile document
@@ -7,8 +7,12 @@ interface IUser extends Document {
   name: string;
   email: string;
   password:string;
+<<<<<<< HEAD
   ingredients: string[];
   recipes: string[];
+=======
+  recipes: Types.ObjectId[];
+>>>>>>> 6d662f97dc192ab441858bbf712a0055ea128716
   isCorrectPassword(password: string): Promise<boolean>;
 }
 
@@ -32,16 +36,19 @@ const userSchema = new Schema<IUser>(
       required: true,
       minlength: 5,
     },
+<<<<<<< HEAD
     ingredients: [
       {
         type: String,
         trim: true,
       },
     ],
+=======
+>>>>>>> 6d662f97dc192ab441858bbf712a0055ea128716
     recipes: [
       {
-        type: String,
-        trim: true,
+        type: Schema.Types.ObjectId,
+        ref: 'Recipes',
       },
     ],
   },
@@ -67,6 +74,10 @@ userSchema.methods.isCorrectPassword = async function (password: string): Promis
   return bcrypt.compare(password, this.password);
 };
 
+<<<<<<< HEAD
 const User = model<IUser>('User', userSchema);
+=======
+const User = model<IUser>('Users', userSchema);
+>>>>>>> 6d662f97dc192ab441858bbf712a0055ea128716
 
 export default User;
