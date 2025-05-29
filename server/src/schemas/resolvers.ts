@@ -1,12 +1,8 @@
 import { User } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 interface User {
-  _id: string;
-  name: string;
   email: string;
-  password: string;
-  ingredients: string[];
-  recipes: string[];
+  recipes: object[];
 }
 
 interface UserArgs {
@@ -55,7 +51,7 @@ const resolvers = {
     },
     me: async (_parent: any, _args: any, context: Context): Promise<User | null> => {
       if (context.user) {
-        return await User.findOne({ _id: context.user._id });
+        return await User.findOne({ email: context.user.email });
       }
       throw AuthenticationError;
     },
