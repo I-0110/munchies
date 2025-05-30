@@ -3,7 +3,7 @@ import { signToken, AuthenticationError } from '../utils/auth.js';
 
 interface User {
   email: string;
-  recipes: object[];
+  week: [];
 }
 
 interface UserArgs {
@@ -18,24 +18,24 @@ interface AddUserArgs {
   }
 }
 
-interface AddIngredientsArgs {
-  userId: string;
-  ingredients: string;
-}
+// interface AddIngredientsArgs {
+//   userId: string;
+//   ingredients: string;
+// }
 
-interface RemoveIngredientsArgs {
-  userId: string;
-  ingredients: string;
-}
+// interface RemoveIngredientsArgs {
+//   userId: string;
+//   ingredients: string;
+// }
 
 interface AddRecipesArgs {
-  userId: string;
+  day: string;
   recipes: string;
 }
 
 interface RemoveRecipesArgs {
-  userId: string;
-  recipes: string;
+  day: string;
+  recipe: object;
 }
 
 interface Context {
@@ -75,25 +75,11 @@ const resolvers = {
       const token = signToken(user.name, user.email, user._id);
       return { token, user };
     },
-    addIngredient: async (_parent: any, { userId, ingredients }: AddIngredientsArgs, context: Context): Promise<User | null> => {
-      if (context.user) {
+    
+    addRecipes: async (_parent: any, {day, recipes }: AddRecipesArgs, _context: Context): Promise<User | null> => {
+      // if (context.user) {
         return await User.findOneAndUpdate(
-          { _id: userId },
-          {
-            $addToSet: { ingredients: ingredients },
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-      }
-      throw AuthenticationError;
-    },
-    addRecipes: async (_parent: any, { userId, recipes }: AddRecipesArgs, context: Context): Promise<User | null> => {
-      if (context.user) {
-        return await User.findOneAndUpdate(
-          { _id: userId },
+          { email: "jo@mail.com", week[day]: day },
           {
             $addToSet: { recipes: recipes },
           },
@@ -102,30 +88,21 @@ const resolvers = {
             runValidators: true,
           }
         );
-      }
-      throw AuthenticationError;
-    },
+      },
+    //   throw AuthenticationError;
+    // },
     removeUser: async (_parent: any, _args: any, context: Context): Promise<User | null> => {
       if (context.user) {
         return await User.findOneAndDelete({ email: context.user.email });
       }
       throw AuthenticationError;
     },
-    removeIngredient: async (_parent: any, { ingredients }: RemoveIngredientsArgs, context: Context): Promise<User | null> => {
+    
+    removeRecipes: async (_parent: any, { day, recipe }: RemoveRecipesArgs, context: Context): Promise<User | null> => {
       if (context.user) {
         return await User.findOneAndUpdate(
-          { email: context.user.email },
-          { $pull: { ingredients: ingredients } },
-          { new: true }
-        );
-      }
-      throw AuthenticationError;
-    },
-    removeRecipes: async (_parent: any, { recipes }: RemoveRecipesArgs, context: Context): Promise<User | null> => {
-      if (context.user) {
-        return await User.findOneAndUpdate(
-          { email: context.user.email },
-          { $pull: { recipes: recipes } },
+          { email: context.user.email, "days": day },
+          { $pull: { "days.recipes": recipe } },
           { new: true }
         );
       }
@@ -135,3 +112,78 @@ const resolvers = {
 };
 
 export default resolvers;
+
+
+// addIngredient: async (_parent: any, { userId, ingredients }: AddIngredientsArgs, context: Context): Promise<User | null> => {
+    //   if (context.user) {
+    //     return await User.findOneAndUpdate(
+    //       { _id: userId },
+    //       {
+    //         $addToSet: { ingredients: ingredients },
+    //       },
+    //       {
+    //         new: true,
+    //         runValidators: true,
+    //       }
+    //     );
+    //   }
+    //   throw AuthenticationError;
+    // },
+    // removeIngredient: async (_parent: any, { ingredients }: RemoveIngredientsArgs, context: Context): Promise<User | null> => {
+    //   if (context.user) {
+    //     return await User.findOneAndUpdate(
+    //       { email: context.user.email },
+    //       { $pull: { ingredients: ingredients } },
+    //       { new: true }
+    //     );
+    //   }
+    //   throw AuthenticationError;
+    // },
+
+
+
+    // addRecipes: async (_parent: any, { day, recipes }: AddRecipesArgs, context: Context): Promise<User | null> => {
+    //   if (context.user) {
+    //     return await User.findOneAndUpdate(
+    //       { email: context.user.email, "days.day": day },
+    //       {
+    //         $addToSet: { recipes: recipes },
+    //       },
+    //       {
+    //         new: true,
+    //         runValidators: true,
+    //       }
+    //     );
+    //   }
+    //   throw AuthenticationError;
+    // },
+
+
+    // {
+    //   "day": "Monday",
+    //   "recipes": [{
+    //     "name": "Hamburger",
+    //     "author": null,
+    //     "instructions": "Assemble",
+    //     "image_url": null,
+    //     "video_url": null,
+    //     "ingredients": [
+    //       {
+    //         "name": "Hamburger",
+    //         "calories": null
+    //       },
+    //       {
+    //         "name": "Pickles",
+    //         "calories": null
+    //       },
+    //       {
+    //         "name": "Cheese",
+    //         "calories": null
+    //       },
+    //       {
+    //         "name": "Bun",
+    //         "calories": null
+    //       }
+    //     ]
+    //   }]
+    // }
