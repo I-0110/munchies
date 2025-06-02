@@ -1,4 +1,4 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import IngredientsList from '../components/IngredientsList';
@@ -9,21 +9,23 @@ import { QUERY_SINGLE_USER, QUERY_ME } from '../utils/queries';
 import Auth from '../utils/auth';
 
 const User = () => {
-  const { userId } = useParams();
+  // const { userId } = useParams();
+  const userData = Auth.getUser();
+  console.log(userData);
 
   // If there is no `profileId` in the URL as a parameter, execute the `QUERY_ME` query instead for the logged in user's information
   const { loading, data } = useQuery(
-    userId ? QUERY_SINGLE_USER : QUERY_ME,
+    userData.data._id ? QUERY_SINGLE_USER : QUERY_ME,
     {
-      variables: { userId: userId },
+      variables: { userId: userData.data._id },
     }
   );
 
   // Check if data is returning from the `QUERY_ME` query, then the `QUERY_SINGLE_PROFILE` query
   const user = data?.me || data?.user || {};
-
+  console.log(user);
   // Use React Router's `<Navigate />` component to redirect to personal profile page if username is yours
-  if (Auth.loggedIn() && Auth.getUser().data._id === userId) {
+  if (Auth.loggedIn() && Auth.getUser().data._id === userData.data._id) {
     return <Navigate to="/me" />;
   }
 
@@ -42,14 +44,15 @@ const User = () => {
 
   return (
     <div>
+      <h1>Welcome back, {user.name}</h1>
       <h2 className="card-header">
-        {userId ? `${user.name}'s` : 'Your'} friends have collect these recipes...
+        {userData.data._id ? `${user.name}'s` : 'Your'} friends have collect these recipes...
       </h2>
 
       {user.ingredients?.length > 0 && (
         <IngredientsList
           ingredients={user.ingrdients}
-          isLoggedInUser={!userId && true}
+          isLoggedInUser={!userData.data._id && true}
         />
       )}
 
