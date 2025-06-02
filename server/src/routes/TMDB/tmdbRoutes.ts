@@ -66,13 +66,13 @@ const router = express.Router()
 //   ]
 // }
 router.get('/:meal', async (req: Request, res: Response) => {
-    const meal = req.query
+    const meal = req.params.meal
     if (!meal) {
         return res.status(400).json({ error: 'Meal query parameter is required' })
     }
 
     try {
-        const response = await fetch(`themealdb.com/api/json/v1/1/search.php?s=${meal}`)
+        const response = await fetch(`https://themealdb.com/api/json/v1/1/search.php?s=${meal}`)
         if (!response.ok) {
             throw new Error('Failed to fetch data from TheMealDB')
         } else {
