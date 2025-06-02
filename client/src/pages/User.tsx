@@ -4,18 +4,17 @@ import { useQuery } from '@apollo/client';
 import IngredientsList from '../components/IngredientsList';
 import IngredientForm from '../components/IngredientForm';
 
-import { QUERY_SINGLE_USER, QUERY_ME } from '../utils/queries';
+import { QUERY_ME } from '../utils/queries';
 
 import Auth from '../utils/auth';
 
 const User = () => {
   // const { userId } = useParams();
   const userData = Auth.getUser();
-  console.log(userData);
 
   // If there is no `profileId` in the URL as a parameter, execute the `QUERY_ME` query instead for the logged in user's information
   const { loading, data } = useQuery(
-    userData.data._id ? QUERY_SINGLE_USER : QUERY_ME,
+    QUERY_ME,
     {
       variables: { userId: userData.data._id },
     }
