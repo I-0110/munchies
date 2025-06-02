@@ -15,14 +15,14 @@ const Header = () => {
             Munchies
           </h1>
         </Link>
-        <p className="m-0" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
+        <h2 className="m-0" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
           Plan your next meal. One meal at the time!
-        </p>
+        </h2>
         <div>
           {Auth.loggedIn() ? (
             <>
               <Link className="btn btn-lg btn-primary m-2" to="/me">
-                View My Profile
+                View My Recipes
               </Link>
               <button className="btn btn-lg btn-light m-2" onClick={logout}>
                 Logout
