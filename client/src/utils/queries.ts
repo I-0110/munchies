@@ -5,7 +5,6 @@ export const QUERY_USERS = gql`
     users {
       _id
       name
-      ingredients
       recipes
     }
   }
@@ -16,7 +15,6 @@ export const QUERY_SINGLE_USER = gql`
     user(userId: $userId) {
       _id
       name
-      ingredients
       recipes
     }
   }
@@ -27,7 +25,6 @@ export const QUERY_ME = gql`
     me {
       _id
       name
-      ingredients
       recipes
     }
   }
