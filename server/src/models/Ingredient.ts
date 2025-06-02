@@ -13,7 +13,7 @@ const ingredientSchema = new Schema<IIngredient>(
     name: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
       trim: true,
     },
     calories: {
@@ -29,6 +29,6 @@ const ingredientSchema = new Schema<IIngredient>(
   }
 );
 
-const Ingredient = model<IIngredient>('Ingredients', ingredientSchema);
+const Ingredient = model<IIngredient>('Ingredient', ingredientSchema);
 
 export default Ingredient;
