@@ -1,16 +1,27 @@
-import { User } from '../models/index.js';
+import { Ingredient, Recipe, User, Plan } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 
-interface User {
+interface IUser {
+  _id: string
   email: string;
-  week: [];
 }
 
-interface UserArgs {
+interface IPlan {
+  dates: string
+  sunday: object[]
+  monday: object[]
+  tuesday: object[]
+  wednesday: object[]
+  thursday: object[]
+  friday: object[]
+  saturday: object[]
+}
+
+interface IUserArgs {
   userId: string;
 }
 
-interface AddUserArgs {
+interface IAddUserArgs {
   input:{
     name: string;
     email: string;
@@ -18,39 +29,54 @@ interface AddUserArgs {
   }
 }
 
-// interface AddIngredientsArgs {
-//   userId: string;
-//   ingredients: string;
-// }
-
-// interface RemoveIngredientsArgs {
-//   userId: string;
-//   ingredients: string;
-// }
-
-interface AddRecipesArgs {
-  day: string;
-  recipes: string;
+interface IAddPlanArgs {
+  input: {
+    userId: string
+    dates: string
+  }
 }
 
-interface RemoveRecipesArgs {
-  day: string;
-  recipe: object;
+interface IIngredientArgs {
+  name: string
+  calories: number
 }
 
-interface Context {
-  user?: User;
+interface IAddRecipesArgs {
+  day: string
+  planId: string
+  input: {
+    name: string
+    author?: string
+    instructions:string
+    image_url?: string
+    video_url?: string
+    ingredients: IIngredientArgs[]
+  }
+}
+
+interface IRemovePlanArgs {
+  planId: string
+}
+
+interface IRemoveRecipesArgs {
+  day: string
+  planId: string
+  recipeId: string
+}
+
+interface IContext {
+  user?: IUser;
 }
 
 const resolvers = {
   Query: {
-    users: async (): Promise<User[]> => {
+    users: async (): Promise<IUser[]> => {
       return await User.find();
     },
-    user: async (_parent: any, { userId }: UserArgs): Promise<User | null> => {
+    user: async (_parent: any, { userId }: IUserArgs): Promise<IUser | null> => {
       return await User.findOne({ _id: userId });
     },
-    me: async (_parent: any, _args: any, context: Context): Promise<User | null> => {
+    me: async (_parent: any, _args: any, context: IContext): Promise<IUser | null> => {
       if (context.user) {
         return await User.findOne({ email: context.user.email });
       }
@@ -58,12 +84,13 @@ const resolvers = {
     },
   },
   Mutation: {
-    addUser: async (_parent: any, { input }: AddUserArgs): Promise<{ token: string; user: User }> => {
-      const user = await User.create({ ...input });
+    addUser: async (_parent: any, { input }: IAddUserArgs): Promise<{ token: string; user: IUser }> => {
+      const user = await User.create({ ...input })
+      user.populate('plan');
       const token = signToken(user.name, user.email, user._id);
       return { token, user };
     },
-    login: async (_parent: any, { email, password }: { email: string; password: string }): Promise<{ token: string; user: User }> => {
+    login: async (_parent: any, { email, password }: { email: string; password: string }): Promise<{ token: string; user: IUser }> => {
       const user = await User.findOne({ email });
       if (!user) {
         throw AuthenticationError;
@@ -75,36 +102,112 @@ const resolvers = {
       const token = signToken(user.name, user.email, user._id);
       return { token, user };
     },
-    
-    addRecipes: async (_parent: any, {day, recipes }: AddRecipesArgs, _context: Context): Promise<User | null> => {
-      // if (context.user) {
+    addPlan: async (_parent: any, { input }: IAddPlanArgs, context: IContext): Promise<IUser | null> => {
+      if (context.user) {
+        const { userId, dates } = input
+        const newPlan = await Plan.create(
+          { 
+            userId: userId,
+            dates: dates
+           })
+
         return await User.findOneAndUpdate(
-          { email: "jo@mail.com", week[day]: day },
+          { _id: userId},
           {
-            $addToSet: { recipes: recipes },
+            $addToSet: { plan: newPlan._id },
           },
           {
             new: true,
             runValidators: true,
           }
         );
-      },
-    //   throw AuthenticationError;
-    // },
-    removeUser: async (_parent: any, _args: any, context: Context): Promise<User | null> => {
+      }
+      throw AuthenticationError;
+    },
+    addRecipes: async (_parent: any, { day, planId, input }: IAddRecipesArgs, context: IContext) => {
+      if (context.user) {
+        if (planId) {
+          const { name, author, instructions, image_url, video_url } = input
+          const ingredientList = []
+          
+          for (const ingredient of input.ingredients) {
+            console.log(ingredient)
+            const newIngredient = await Ingredient.create({ ...ingredient })
+            ingredientList.push((newIngredient._id))
+          }
+          const recipe = await Recipe.create({ planId, name, author, instructions, image_url, video_url, ingredients: ingredientList })
+
+          const updatedPlan = await Plan.findOneAndUpdate(
+            { _id: planId },
+            { $push: { [day]: recipe._id } },
+            {
+              new: true,
+              runValidators: true,
+            }
+            );
+
+          return await updatedPlan?.populate({
+            path: `${day}`,
+            populate: {
+              path: 'ingredients',
+              model: 'Ingredient',
+            },
+          });
+        }
+        throw new Error("No plan id supplied! Plan id must be supplied for update.")
+      }
+      throw AuthenticationError
+    },
+    removeUser: async (_parent: any, _args: any, context: IContext): Promise<IUser | null> => {
       if (context.user) {
         return await User.findOneAndDelete({ email: context.user.email });
       }
       throw AuthenticationError;
     },
-    
-    removeRecipes: async (_parent: any, { day, recipe }: RemoveRecipesArgs, context: Context): Promise<User | null> => {
+    removePlan: async (_parent: any, { planId }: IRemovePlanArgs, context: IContext): Promise<IUser | null> => {
       if (context.user) {
-        return await User.findOneAndUpdate(
-          { email: context.user.email, "days": day },
-          { $pull: { "days.recipes": recipe } },
-          { new: true }
-        );
+        if (planId) {
+          const deletedPlan = await Plan.findOneAndDelete(
+            {
+              _id: planId,
+              userId: context.user?._id
+            }
+          )
+  
+          return await User.findOneAndUpdate(
+            { _id: context.user?._id },
+            {
+              $pull: { plan: deletedPlan?._id },
+            },
+            {
+              new: true,
+              runValidators: true,
+            }
+          );
+        }
+        throw new Error("No plan id supplied! Plan id must be supplied for plan to be deleted.")
+      }
+      throw AuthenticationError;
+    },
+    removeRecipes: async (_parent: any, { day, planId, recipeId }: IRemoveRecipesArgs, context: IContext): Promise<IPlan | null> => {
+      if (context.user) {
+        if (planId) {
+          const deletedRecipe = await Recipe.findOneAndDelete(
+            { 
+              _id: recipeId,
+              planId: planId
+            })
+
+          return await Plan.findOneAndUpdate(
+            { _id: planId },
+            { $pull: { [day]: deletedRecipe?._id } },
+            {
+              new: true,
+              runValidators: true,
+            }
+          );
+        }
+        throw new Error("No plan id supplied! Plan id must be supplied for update.")
       }
       throw AuthenticationError;
     },
@@ -114,76 +217,34 @@ const resolvers = {
 export default resolvers;
 
 
-// addIngredient: async (_parent: any, { userId, ingredients }: AddIngredientsArgs, context: Context): Promise<User | null> => {
-    //   if (context.user) {
-    //     return await User.findOneAndUpdate(
-    //       { _id: userId },
-    //       {
-    //         $addToSet: { ingredients: ingredients },
-    //       },
-    //       {
-    //         new: true,
-    //         runValidators: true,
-    //       }
-    //     );
-    //   }
-    //   throw AuthenticationError;
-    // },
-    // removeIngredient: async (_parent: any, { ingredients }: RemoveIngredientsArgs, context: Context): Promise<User | null> => {
-    //   if (context.user) {
-    //     return await User.findOneAndUpdate(
-    //       { email: context.user.email },
-    //       { $pull: { ingredients: ingredients } },
-    //       { new: true }
-    //     );
-    //   }
-    //   throw AuthenticationError;
-    // },
 
-
-
-    // addRecipes: async (_parent: any, { day, recipes }: AddRecipesArgs, context: Context): Promise<User | null> => {
-    //   if (context.user) {
-    //     return await User.findOneAndUpdate(
-    //       { email: context.user.email, "days.day": day },
-    //       {
-    //         $addToSet: { recipes: recipes },
-    //       },
-    //       {
-    //         new: true,
-    //         runValidators: true,
-    //       }
-    //     );
-    //   }
-    //   throw AuthenticationError;
-    // },
 
 
     // {
     //   "day": "Monday",
-    //   "recipes": [{
-    //     "name": "Hamburger",
-    //     "author": null,
-    //     "instructions": "Assemble",
-    //     "image_url": null,
-    //     "video_url": null,
-    //     "ingredients": [
-    //       {
-    //         "name": "Hamburger",
-    //         "calories": null
-    //       },
-    //       {
-    //         "name": "Pickles",
-    //         "calories": null
-    //       },
-    //       {
-    //         "name": "Cheese",
-    //         "calories": null
-    //       },
-    //       {
-    //         "name": "Bun",
-    //         "calories": null
-    //       }
-    //     ]
+      // "recipes": [{
+      //   "name": "Hamburger",
+      //   "author": null,
+      //   "instructions": "Assemble",
+      //   "image_url": null,
+      //   "video_url": null,
+      //   "ingredients": [
+      //     {
+      //       "name": "Hamburger",
+      //       "calories": null
+      //     },
+      //     {
+      //       "name": "Pickles",
+      //       "calories": null
+      //     },
+      //     {
+      //       "name": "Cheese",
+      //       "calories": null
+      //     },
+      //     {
+      //       "name": "Bun",
+      //       "calories": null
+      //     }
+      //   ]
     //   }]
-    // }
+    // // }

@@ -1,21 +1,27 @@
 const typeDefs = `
   type User {
-    _id: ID
+    _id: String
     name: String
     email: String
     password: String
-    week: Week!
+    plan: [Plan]
   }
 
-  type Day {
-    _id: String;
-    userId: String;
-    name: String;
-    recipes: [Recipe];
+  type Plan {
+    _id: String
+    userId: String
+    sunday: [Recipe]
+    monday: [Recipe]
+    tuesday: [Recipe]
+    wednesday: [Recipe]
+    thursday: [Recipe]
+    friday: [Recipe]
+    saturday: [Recipe]
   }
 
   type Recipe {
     _id: ID
+    planId: String
     name: String
     author: String
     instructions: String
@@ -41,6 +47,10 @@ const typeDefs = `
     password: String!
   }
 
+  input PlanInput {
+    dates: String
+  }
+
   input RecipeInput {
     name: String!
     author: String
@@ -52,7 +62,7 @@ const typeDefs = `
 
   input IngredientInput {
     name: String!
-    calories: Int
+    calories: Float
   }
 
   type Query {
@@ -64,9 +74,11 @@ const typeDefs = `
   type Mutation {
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
-    addRecipes( day: String!, recipes: [RecipeInput]!): User
+    addPlan(input: PlanInput!): User
+    addRecipes( day: String!, planId: String!, input: RecipeInput!): Plan
     removeUser: User
-    removeRecipes(day: String!, recipes: [RecipeInput]!): User
+    removePlan(planId: String!): User
+    removeRecipes(day: String!, planId: String!, recipeId: String!): Plan
   }
 `;
 

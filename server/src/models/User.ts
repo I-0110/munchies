@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 // Define an interface for the Profile document
@@ -7,7 +7,7 @@ interface IUser extends Document {
   name: string;
   email: string;
   password:string;
-  week: Types.ObjectId[];
+  plan?: Schema.Types.ObjectId[];
   isCorrectPassword(password: string): Promise<boolean>;
 }
 
@@ -31,12 +31,11 @@ const userSchema = new Schema<IUser>(
       required: true,
       minlength: 5,
     },
-    week: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Day',
-      },
-    ]
+    plan: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Plan',
+      required: false
+    }],
   },
   {
     timestamps: true,

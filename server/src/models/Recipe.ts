@@ -1,14 +1,15 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 
 // Define an interface for the Profile document
 interface IRecipe extends Document {
   _id: string;
+  planId: string;
   name: string;
   author?: string;
   instructions:string;
   image_url?: string;
   video_url?: string;
-  ingredients: Types.ObjectId[];
+  ingredients: Schema.Types.ObjectId[];
 }
 
 // Define the schema for the Profile document
@@ -17,7 +18,13 @@ const recipeSchema = new Schema<IRecipe>(
     name: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
+      trim: true,
+    },
+    planId: {
+      type: String,
+      required: true,
+      unique: false,
       trim: true,
     },
     author: {
@@ -55,6 +62,6 @@ const recipeSchema = new Schema<IRecipe>(
   }
 );
 
-const Recipe = model<IRecipe>('Recipes', recipeSchema);
+const Recipe = model<IRecipe>('Recipe', recipeSchema);
 
 export default Recipe;
