@@ -5,7 +5,6 @@ export const QUERY_USERS = gql`
     users {
       _id
       name
-      recipes
     }
   }
 `;
@@ -15,17 +14,35 @@ export const QUERY_SINGLE_USER = gql`
     user(userId: $userId) {
       _id
       name
-      recipes
     }
   }
 `;
 
 export const QUERY_ME = gql`
-  query me {
-    me {
-      _id
-      name
-      recipes
+query me {
+  me {
+    plan {
+      sunday {
+        name
+        image_url
+      }
+      monday {
+        name
+        image_url
+      }
+      tuesday {
+        name
+        image_url
+      }
+      wednesday {
+        name
+        image_url
+      }
+      thursday {
+        name
+        image_url
+      }      
     }
   }
+}
 `;
