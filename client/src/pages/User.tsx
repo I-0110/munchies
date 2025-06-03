@@ -9,11 +9,8 @@ import { DELETE_USER } from '../utils/mutations';
 
 const User = () => {
   const userData = Auth.getUser();
-<<<<<<< HEAD
 
   const [deleteUser] = useMutation(DELETE_USER);
-=======
->>>>>>> 1009a800712cb92e7f32bae9bec39401063b33a2
 
   // If there is no `profileId` in the URL as a parameter, execute the `QUERY_ME` query instead for the logged in user's information
   const { loading, data } = useQuery(
