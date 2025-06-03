@@ -22,8 +22,9 @@ const User = () => {
 
   // Check if data is returning from the `QUERY_ME` query, then the `QUERY_SINGLE_PROFILE` query
   const user = data?.me || data?.user || {};
-  if (!Auth.loggedIn() && Auth.getUser().data._id !== userData.data._id) {
-    return <Navigate to="/me" />;
+
+  if (!Auth.loggedIn() || Auth.getUser().data._id !== userData.data._id) {
+    return <Navigate to="/login" />;
   }
 
   if (loading) {
