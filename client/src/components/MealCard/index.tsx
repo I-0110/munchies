@@ -12,7 +12,6 @@ type MealCardProps = {
     ingredients: []
 }
 
-
 const MealCard: React.FC<MealCardProps> = ({ image_url, name, category }) => (
     <Link to={`/recipe/${name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <div style={{
