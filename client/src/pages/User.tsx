@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 
-import { QUERY_SINGLE_USER, QUERY_ME } from '../utils/queries';
+import { QUERY_ME } from '../utils/queries';
 
 import Auth from '../utils/auth';
 
@@ -9,12 +9,15 @@ import { DELETE_USER } from '../utils/mutations';
 
 const User = () => {
   const userData = Auth.getUser();
+<<<<<<< HEAD
 
   const [deleteUser] = useMutation(DELETE_USER);
+=======
+>>>>>>> 1009a800712cb92e7f32bae9bec39401063b33a2
 
   // If there is no `profileId` in the URL as a parameter, execute the `QUERY_ME` query instead for the logged in user's information
   const { loading, data } = useQuery(
-    userData.data._id ? QUERY_SINGLE_USER : QUERY_ME,
+    QUERY_ME,
     {
       variables: { userId: userData.data._id },
     }
