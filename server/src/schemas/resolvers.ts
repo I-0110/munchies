@@ -1,22 +1,11 @@
-import { Ingredient, Recipe, User, Plan } from '../models/index.js';
+import { Ingredient, Recipe, User } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 
 interface IUser {
   _id: string
   email: string;
 }
-
-interface IPlan {
-  dates: string
-  sunday: object[]
-  monday: object[]
-  tuesday: object[]
-  wednesday: object[]
-  thursday: object[]
-  friday: object[]
-  saturday: object[]
-}
-
+{}
 interface IUserArgs {
   userId: string;
 }
@@ -29,22 +18,14 @@ interface IAddUserArgs {
   }
 }
 
-interface IAddPlanArgs {
-  input: {
-    userId: string
-    dates: string
-  }
-}
-
 interface IIngredientArgs {
   name: string
   calories: number
 }
 
 interface IAddRecipesArgs {
-  day: string
-  planId: string
   input: {
+    day: string
     name: string
     author?: string
     instructions:string
@@ -54,13 +35,8 @@ interface IAddRecipesArgs {
   }
 }
 
-interface IRemovePlanArgs {
-  planId: string
-}
-
 interface IRemoveRecipesArgs {
   day: string
-  planId: string
   recipeId: string
 }
 
@@ -74,11 +50,11 @@ const resolvers = {
       return await User.find();
     },
     user: async (_parent: any, { userId }: IUserArgs): Promise<IUser | null> => {
-      return await User.findOne({ _id: userId });
+      return await User.findOne({ _id: userId }).populate({path: 'recipes', populate: { path: 'ingredients', model: 'Ingredient'}});
     },
     me: async (_parent: any, _args: any, context: IContext): Promise<IUser | null> => {
       if (context.user) {
-        return await User.findOne({ email: context.user.email });
+        return await User.findOne({ email: context.user.email }).populate({path: 'recipes', populate: { path: 'ingredients', model: 'Ingredient'}});
       }
       throw AuthenticationError;
     },
@@ -86,7 +62,7 @@ const resolvers = {
   Mutation: {
     addUser: async (_parent: any, { input }: IAddUserArgs): Promise<{ token: string; user: IUser }> => {
       const user = await User.create({ ...input })
-      user.populate('plan');
+      user.populate('recipes');
       const token = signToken(user.name, user.email, user._id);
       return { token, user };
     },
@@ -102,32 +78,9 @@ const resolvers = {
       const token = signToken(user.name, user.email, user._id);
       return { token, user };
     },
-    addPlan: async (_parent: any, { input }: IAddPlanArgs, context: IContext): Promise<IUser | null> => {
+    addRecipes: async (_parent: any, { input }: IAddRecipesArgs, context: IContext) => {
       if (context.user) {
-        const { userId, dates } = input
-        const newPlan = await Plan.create(
-          { 
-            userId: userId,
-            dates: dates
-           })
-
-        return await User.findOneAndUpdate(
-          { _id: userId},
-          {
-            $addToSet: { plan: newPlan._id },
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-      }
-      throw AuthenticationError;
-    },
-    addRecipes: async (_parent: any, { day, planId, input }: IAddRecipesArgs, context: IContext) => {
-      if (context.user) {
-        if (planId) {
-          const { name, author, instructions, image_url, video_url } = input
+          const { day, name, author, instructions, image_url, video_url } = input
           const ingredientList = []
           
           for (const ingredient of input.ingredients) {
@@ -135,26 +88,24 @@ const resolvers = {
             const newIngredient = await Ingredient.create({ ...ingredient })
             ingredientList.push((newIngredient._id))
           }
-          const recipe = await Recipe.create({ planId, name, author, instructions, image_url, video_url, ingredients: ingredientList })
+          const recipe = await Recipe.create({ day, name, author, instructions, image_url, video_url, ingredients: ingredientList })
 
-          const updatedPlan = await Plan.findOneAndUpdate(
-            { _id: planId },
-            { $push: { [day]: recipe._id } },
+          const updatedUser = await User.findOneAndUpdate(
+            { _id: context.user._id },
+            { $push: { recipes: recipe } },
             {
               new: true,
               runValidators: true,
             }
             );
 
-          return await updatedPlan?.populate({
-            path: `${day}`,
+          return await updatedUser?.populate({
+            path: 'recipes',
             populate: {
               path: 'ingredients',
               model: 'Ingredient',
             },
           });
-        }
-        throw new Error("No plan id supplied! Plan id must be supplied for update.")
       }
       throw AuthenticationError
     },
@@ -164,51 +115,45 @@ const resolvers = {
       }
       throw AuthenticationError;
     },
-    removePlan: async (_parent: any, { planId }: IRemovePlanArgs, context: IContext): Promise<IUser | null> => {
+    removeRecipes: async (_parent: any, { day, recipeId }: IRemoveRecipesArgs, context: IContext) => {
       if (context.user) {
-        if (planId) {
-          const deletedPlan = await Plan.findOneAndDelete(
-            {
-              _id: planId,
-              userId: context.user?._id
+          const deletedIngredients = await Recipe.findOne(
+            { 
+              day: day,
+              _id: recipeId
+            }, 'ingredients')
+          
+          
+          if (deletedIngredients && Array.isArray(deletedIngredients.ingredients)) {
+            for (const ingredient of deletedIngredients.ingredients) {
+              await Ingredient.findOneAndDelete({ _id: ingredient });
             }
-          )
-  
-          return await User.findOneAndUpdate(
-            { _id: context.user?._id },
-            {
-              $pull: { plan: deletedPlan?._id },
-            },
-            {
-              new: true,
-              runValidators: true,
-            }
-          );
-        }
-        throw new Error("No plan id supplied! Plan id must be supplied for plan to be deleted.")
-      }
-      throw AuthenticationError;
-    },
-    removeRecipes: async (_parent: any, { day, planId, recipeId }: IRemoveRecipesArgs, context: IContext): Promise<IPlan | null> => {
-      if (context.user) {
-        if (planId) {
+          }
+
           const deletedRecipe = await Recipe.findOneAndDelete(
             { 
-              _id: recipeId,
-              planId: planId
-            })
+              day: day,
+              _id: recipeId
+            }
+          )
 
-          return await Plan.findOneAndUpdate(
-            { _id: planId },
-            { $pull: { [day]: deletedRecipe?._id } },
+          const updatedUser = await User.findOneAndUpdate(
+            { _id: context.user._id },
+            { $pull: { recipes: deletedRecipe?._id } },
             {
               new: true,
               runValidators: true,
             }
           );
+
+          return await updatedUser?.populate({
+            path: 'recipes',
+            populate: {
+              path: 'ingredients',
+              model: 'Ingredient',
+            },
+          });
         }
-        throw new Error("No plan id supplied! Plan id must be supplied for update.")
-      }
       throw AuthenticationError;
     },
   },
@@ -221,7 +166,7 @@ export default resolvers;
 
 
     // {
-    //   "day": "Monday",
+      // "day": "Monday",
       // "recipes": [{
       //   "name": "Hamburger",
       //   "author": null,
@@ -246,5 +191,5 @@ export default resolvers;
       //       "calories": null
       //     }
       //   ]
-    //   }]
-    // // }
+      // }]
+    // }

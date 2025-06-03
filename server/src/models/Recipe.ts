@@ -3,25 +3,25 @@ import { Schema, model, Document } from 'mongoose';
 // Define an interface for the Profile document
 interface IRecipe extends Document {
   _id: string;
-  planId: string;
+  day: string;
   name: string;
   author?: string;
   instructions:string;
   image_url?: string;
   video_url?: string;
-  ingredients: Schema.Types.ObjectId[];
+  ingredients?: Schema.Types.ObjectId[];
 }
 
 // Define the schema for the Profile document
 const recipeSchema = new Schema<IRecipe>(
   {
-    name: {
+    day: {
       type: String,
       required: true,
       unique: false,
       trim: true,
     },
-    planId: {
+    name: {
       type: String,
       required: true,
       unique: false,
@@ -52,6 +52,7 @@ const recipeSchema = new Schema<IRecipe>(
       {
         type: Schema.Types.ObjectId,
         ref: 'Ingredients',
+        required: false,
       },
     ],
   },
