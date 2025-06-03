@@ -79,10 +79,10 @@ function convertToC(fahrenheit: number): number {
 function convertTemperaturesInText(text: string, useCelsius: boolean): string {
     return text.replace(/(\d+)\s*(°[CF])/gi, (_, value, unit) => {
         const number = parseInt(value, 10);
-        if (unit.toUpperCase() === ('°C' || 'C') && !useCelsius) {
+        if (unit.toUpperCase() === 'C' && !useCelsius) {
             return `${Math.round(convertToC(number))}°F`;
         }
-        if (unit.toUpperCase() === ('°F' || 'F') && !useCelsius) {
+        if (unit.toUpperCase() === 'F' && !useCelsius) {
             return `${Math.round(convertToF(number))}°C`;
         }
         return `${number}${unit}`;
