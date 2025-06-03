@@ -16,7 +16,7 @@ const Header = () => {
           </h1>
         </Link>
         <h2 className="m-0" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
-          Plan your week. One meal at the time!
+          Plan your week. One meal at a time!
         </h2>
         <div>
           {Auth.loggedIn() ? (
