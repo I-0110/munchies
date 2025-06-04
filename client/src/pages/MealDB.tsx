@@ -1,4 +1,4 @@
-import {useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // import { FormEvent } from 'react';
 // import Auth from '../utils/auth';
 
@@ -38,6 +38,8 @@ function extractIngredients(meal: Record<string, any>): Ingredient[] {
     return ingredients;
 }
 
+// Unit conversion functions (commented out)
+/*
 function convertToMetric(measurement: string): string {
     const conversions: Record<string, string> = {
         '1 cup': '240 ml',
@@ -77,28 +79,31 @@ function convertToC(fahrenheit: number): number {
 }
 
 function convertTemperaturesInText(text: string, useCelsius: boolean): string {
-    return text.replace(/(\d+)\s*(°[CF])/gi, (_, value, unit) => {
-        const number = parseInt(value, 10);
-        if (unit.toUpperCase() === 'C' && !useCelsius) {
-            return `${Math.round(convertToC(number))}°F`;
+    return text.replace(/(\d{2,3})\s?(°?[CFcf])\b/g, (_, value, unit) => {
+        const temp = parseInt(value, 10);
+        const normalUnit = unit.toUpperCase().replace('°', '');
+
+        if (normalUnit === 'C' && !useCelsius) {
+            return `${Math.round(convertToF(temp))}°F`;
+        } else if (normalUnit === 'F' && !useCelsius) {
+            return `${Math.round(convertToC(temp))}°C`;
         }
-        if (unit.toUpperCase() === 'F' && !useCelsius) {
-            return `${Math.round(convertToF(number))}°C`;
-        }
-        return `${number}${unit}`;
+        return `${temp}°${normalUnit}`;
     });
 }
+*/
 
 const RecipePage = () => {
     const { name } = useParams<{ name: string }>();
     const [meal, setMeal] = useState<Meal | null>(null);
 
     // useState for measurement metric. false = U.S., true = Metric
-    const [useMetric, setUseMetric] = useState(false); 
+    // const [useMetric, setUseMetric] = useState(false); 
     // useState to convert Celsius to Fahrenheit. false = F, true = C
-    const [useTemp, setUseTemp] = useState(false);
+    // const [useTemp, setUseTemp] = useState(false);
 
     const [loading, setLoading] = useState(true);
+    const [toPrint, setToPrint] = useState(false);
 
     useEffect(() => {
         const fetchMeal = async () => {
@@ -111,7 +116,7 @@ const RecipePage = () => {
 
                     setMeal({ ...mealData, ingredients });
                 } else {
-                    setMeal(null)
+                    setMeal(null);
                 }
             } catch (error) {
                 console.error('Error fetching meal:', error);
@@ -123,57 +128,113 @@ const RecipePage = () => {
         fetchMeal();
     }, [name]);
 
-    if (loading) 
-        return <div>Loading recipe...</div>;
-    if (!meal) 
-        return <div>No recipe found for "{name}"</div>;
+    // Trigger print mode
+    const handlePrint = () => {
+        setToPrint(true);
+    };
 
+    // Trigger browser print and reset state
+    useEffect(() => {
+        if (toPrint) {
+            setTimeout(() => {
+                window.print();
+                setToPrint(false);
+            }, 0);
+        }
+    }, [toPrint]);
+
+    if (loading) return <div>Loading recipe...</div>;
+    if (!meal) return <div>No recipe found for "{name}"</div>;
+
+    // filters what we want to print
+    if (toPrint) {
+        return (
+            <div style={{ padding: 20 }}>
+                <h1>{meal.strMeal}</h1>
+                <h4><strong>Category:</strong> {meal.strCategory}</h4>
+                <img
+                    src={meal.strMealThumb}
+                    alt={meal.strMeal}
+                    style={{ width: 300, borderRadius: 8 }}
+                />
+                <h3><strong>Ingredients:</strong></h3>
+                <ul>
+                    {meal.ingredients?.map((item, index) => (
+                        <li key={index}>
+                            {item.measurement} {item.ingredient}
+                        </li>
+                    ))}
+                </ul>
+                <h3><strong>Instructions:</strong></h3>
+                <p>{meal.strInstructions}</p>
+            </div>
+        );
+    } else { 
+        // Regular UI with buttons and videos
     return (
-       <div style={{ padding: 20 }}>
+        <div style={{ padding: 20 }}>
             <h1>{meal.strMeal}</h1> 
             <h4><strong>Category:</strong> {meal.strCategory}</h4>
-            <img src={meal.strMealThumb} alt={meal.strMeal} style={{ width: 300, borderRadius: 8 }} /> 
-        <button onClick={() => setUseMetric(prev => !prev)}>
-            Switch to {useMetric ? 'U.S.' : 'Metric'} units
-        </button>
-        <h3><strong>Ingredients:</strong></h3>
-        <ul>
-            {meal.ingredients?.map((item, index) => {
-                const converted = useMetric
-                    ? convertToMetric(item.measurement) 
-                    : convertToImperial(item.measurement)
+            <button onClick={handlePrint} style={{ margin: '10px 0' }}>
+            🖨️ Print Recipe
+            </button>
+            <img
+                src={meal.strMealThumb}
+                alt={meal.strMeal}
+                style={{ width: 300, borderRadius: 8 }}
+            />
 
-                return (
-                <li key={index}>
-                    {converted} {item.ingredient}
-                </li>
-            );
-            })}
-        </ul>
-        <button onClick={() => setUseTemp(prev => !prev)}>
-            Switch to {useTemp ? '°F' : '°C'}
-        </button>
-        <h3><strong>Instructions:</strong></h3>
-        <p>
-            {convertTemperaturesInText(meal.strInstructions, useTemp)}
-        </p>
+            {/* <button onClick={() => setUseMetric(prev => !prev)}>
+                Switch to {useMetric ? 'U.S.' : 'Metric'} units
+            </button> */}
 
-        {meal.strYoutube && (
-            <div>
-                <h3><strong>Video Tutorial for: {meal.strMeal}</strong></h3>
-                <iframe
-                    width="600"
-                    height="400"
-                    src={`https://www.youtube.com/embed/${new URLSearchParams(new URL(meal.strYoutube).search).get('v')}`}
-                    title={meal.strMeal}
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                ></iframe>
+            <h3><strong>Ingredients:</strong></h3>
+            <ul>
+                {meal.ingredients?.map((item, index) =>
+                    // Uncomment if you want to use unit conversions:
+                    // {
+                    //     const converted = useMetric
+                    //         ? convertToMetric(item.measurement) 
+                    //         : convertToImperial(item.measurement);
+                    //     return (
+                    //         <li key={index}>{converted} {item.ingredient}</li>
+                    //     );
+                    // }
+
+                    // Basic version (no conversion)
+                    <li key={index}>
+                        {item.measurement} {item.ingredient}
+                    </li>
+                )}
+            </ul>
+
+            <h3><strong>Instructions:</strong></h3>
+            <p>{meal.strInstructions}</p>
+
+            {/* <button onClick={() => setUseTemp(prev => !prev)}>
+                Switch to {useTemp ? '°F' : '°C'}
+            </button>
+            <p>
+                {convertTemperaturesInText(meal.strInstructions, useTemp)}
+            </p> */}
+
+            {meal.strYoutube && (
+                <div>
+                    <h3><strong>Video Tutorial for: {meal.strMeal}</strong></h3>
+                    <iframe
+                        width="600"
+                        height="400"
+                        src={`https://www.youtube.com/embed/${new URLSearchParams(new URL(meal.strYoutube).search).get('v')}`}
+                        title={meal.strMeal}
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                    ></iframe>
                 </div>
-        )}
+            )}
         </div>
-    );
+    )};
 };
 
 export default RecipePage;
+
 
