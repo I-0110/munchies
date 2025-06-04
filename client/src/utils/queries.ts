@@ -21,27 +21,22 @@ export const QUERY_SINGLE_USER = gql`
 export const QUERY_ME = gql`
 query me {
   me {
-    plan {
-      sunday {
+    _id
+    email
+    name
+    recipes {
+      _id
+      author
+      day
+      image_url
+      ingredients {
+        _id
+        calories
         name
-        image_url
       }
-      monday {
-        name
-        image_url
-      }
-      tuesday {
-        name
-        image_url
-      }
-      wednesday {
-        name
-        image_url
-      }
-      thursday {
-        name
-        image_url
-      }      
+      instructions
+      name
+      video_url
     }
   }
 }
