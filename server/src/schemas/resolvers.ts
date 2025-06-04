@@ -111,7 +111,7 @@ const resolvers = {
     },
     removeUser: async (_parent: any, _args: any, context: IContext): Promise<IUser | null> => {
       if (context.user) {
-        return await User.findOneAndDelete({ email: context.user.email });
+        return await User.findOneAndDelete({ email: context.user._id });
       }
       throw AuthenticationError;
     },
