@@ -24,6 +24,7 @@ query me {
     _id
     email
     name
+    password
     recipes {
       _id
       author
