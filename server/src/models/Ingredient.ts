@@ -4,6 +4,7 @@ import { Schema, model, Document } from 'mongoose';
 interface IIngredient extends Document {
   _id: string;
   name: string;
+  amount: string;
   calories: number;
 }
 
@@ -11,6 +12,12 @@ interface IIngredient extends Document {
 const ingredientSchema = new Schema<IIngredient>(
   {
     name: {
+      type: String,
+      required: true,
+      unique: false,
+      trim: true,
+    },
+    amount: {
       type: String,
       required: true,
       unique: false,

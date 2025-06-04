@@ -65,6 +65,8 @@ const router = express.Router()
 //     }
 //   ]
 // }
+
+// note to self: food instead of meal???
 router.get('/:meal', async (req: Request, res: Response) => {
     const meal = req.params.meal
     if (!meal) {
