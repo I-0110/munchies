@@ -13,13 +13,12 @@ const Home = () => {
   const [result, setResult] = useState<Recipe[] | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
   
-  const [addRecipe] = useMutation(ADD_RECIPE)
+  const [addRecipe] = useMutation(ADD_RECIPE);
 
   const handleSearch = async () => {
     setSearchLoading(true);
     try {
       const response = await retreiveTMDBRecipies(query); 
-      // const data = await response;
       
       setResult(response);
       console.log(`API response:`, response);
@@ -61,8 +60,6 @@ const Home = () => {
     }
   };
 
-  // const users = data?.users || [];
-  
   return (
     <main>
       <div className="flex-row justify-center">
