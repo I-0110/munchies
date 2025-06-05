@@ -24,6 +24,10 @@ query me {
     _id
     email
     name
+<<<<<<< HEAD
+=======
+    password
+>>>>>>> c360210450c6cd42ad8a4cd511ed4538c73b52b4
     recipes {
       _id
       author

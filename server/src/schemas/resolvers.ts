@@ -109,9 +109,34 @@ const resolvers = {
       }
       throw AuthenticationError
     },
-    removeUser: async (_parent: any, _args: any, context: IContext): Promise<IUser | null> => {
+    removeUser: async (_parent: any, _args: any, context: IContext) => {
       if (context.user) {
+<<<<<<< HEAD
         return await User.findOneAndDelete({ email: context.user._id });
+=======
+        const recipes = await User.findOne({ _id: context.user._id }, 'recipes');
+
+        if (recipes && Array.isArray(recipes.recipes)) {
+          for (const recipe of recipes.recipes) {
+            const ingredients = await Recipe.findOne(
+              { 
+                _id: recipe
+              }, 'ingredients')
+            
+            
+            if (ingredients && Array.isArray(ingredients.ingredients)) {
+              for (const ingredient of ingredients.ingredients) {
+                await Ingredient.findOneAndDelete({ _id: ingredient });
+              }
+            }
+
+            await Recipe.findOneAndDelete({ _id: recipe });
+          }
+        }
+
+        await User.findOneAndDelete({ _id: context.user._id })
+        return
+>>>>>>> c360210450c6cd42ad8a4cd511ed4538c73b52b4
       }
       throw AuthenticationError;
     },

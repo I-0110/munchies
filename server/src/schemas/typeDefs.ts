@@ -60,7 +60,7 @@ const typeDefs = `
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
     addRecipes( input: RecipeInput!): User
-    removeUser: User
+    removeUser: Boolean
     removeRecipes(day: String!, recipeId: String!): User
   }
 `;
