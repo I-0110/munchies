@@ -24,7 +24,6 @@ const Home = () => {
       const data = await response;
       
       setResult(data);
-      
       console.log(`API response:`, data);
     } catch (error) {
       console.error('Fetch error:', error);
