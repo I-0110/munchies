@@ -3,29 +3,28 @@ import { Schema, model, Document } from 'mongoose';
 // Define an interface for the Profile document
 interface IIngredient extends Document {
   _id: string;
-  name: string;
-  amount: string;
+  ingredient: string;
+  measure: string;
   calories: number;
 }
 
 // Define the schema for the Profile document
 const ingredientSchema = new Schema<IIngredient>(
   {
-    name: {
+    ingredient: {
       type: String,
       required: true,
       unique: false,
       trim: true,
     },
-    amount: {
+    measure: {
       type: String,
-      required: true,
       unique: false,
       trim: true,
     },
     calories: {
       type: Number,
-      required: true,
+      required: false,
       trim: true
     }
   },

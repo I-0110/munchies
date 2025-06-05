@@ -22,7 +22,7 @@ export const ADD_INGREDIENT = gql`
   }
 `;
 
-export const ADD_RECIPES = gql`
+export const ADD_RECIPE = gql`
   mutation addRecipes($userId: ID!, $recipes: String!) {
     addRecipes(userId: $userId, recipes: $recipes) {
       _id
@@ -65,10 +65,7 @@ export const REMOVE_RECIPES = gql`
 `;
 
 export const DELETE_USER = gql`
-  mutation deleteUser($userId: ID!) {
-    deleteUser(userId: $userId) {
-      _id
-      email
-    }
-  }
+  mutation Mutation {
+  removeUser
+}
 `;
