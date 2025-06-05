@@ -67,29 +67,6 @@ export const convertToRecipe = (raw: RawRecipe): Recipe => {
   };
 };
 
-
-// const collapseIngredients(recipe: Recipe): Ingredient[] => {
-
-//     for (let i = 1; i <= 20; i++) {
-//         const name = (recipe as any)[`strIngredient${i}`];
-//         const measure = (recipe as any)[`strMeasure${i}`];
-
-
-//         while (meal[`strMeasure${i}`]) {
-//             const ingredient: Ingredient = {};
-//             ingredient.name = recipe[`strIngredient${i}`] || ""
-//             ingredient.measure = recipe[`strMeasure${i}`] || ""
-
-//             ingredients.push(ingredient)
-//             pos++
-//         }
-
-//         meal.ingredients = (ingredients)
-//     }
-
-//     return exampleResponse
-// }
-
 export interface TmdbReturn {
-    results: RawRecipe[]
+    meals: RawRecipe[]
 }

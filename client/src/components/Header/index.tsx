@@ -8,17 +8,17 @@ const Header = () => {
     Auth.logout();
   };
   return (
-    <header className="bg-info text-dark mb-4 py-3 display-flex align-center">
+    <header className="bg-slate-700 pb-4 flex">
       <div className="container flex-column justify-space-between-lg justify-center align-center text-center">
-        <Link className="text-dark" to="/">
+        <Link className="text-sky-200 text-light" to="/">
           <h1 className="m-0" style={{ fontSize: '3rem' }}>
             Munchies
           </h1>
         </Link>
-        <h2 className="m-0" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
+        <h2 className="m-2000px" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
           Plan your next meal. One meal at the time!
         </h2>
-        <div>
+        <div className='m-'>
           {Auth.loggedIn() ? (
             <>
               <Link className="btn btn-lg btn-primary m-2" to="/me">
