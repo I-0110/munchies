@@ -1,55 +1,52 @@
 import React from 'react'
-import MealCard from '../MealCard'
-
-type Weekday = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'
-
-type Recipe = {  
-    _id: string
-    name: string
-    author?: string
-    category?: string
-    instructions:string
-    image_url?: string
-    video_url?: string
-    ingredients: []
-}
 
 type WeekProps = {
-    week: { day: Weekday; Recipes: Recipe[] }[]
+    user: {
+        name: string
+        recipes: any[]
+    }
 }
 
-const Week: React.FC<WeekProps> = ({ week }) => {
-    return (
-        <div className="container">
-            <h2 className="text-center my-4">Weekly Meal Plan</h2>
-            <div className="row">
-                {week.map(({ day, Recipes: recipes }) => (
-                    <div key={day} className="col-12 col-md-6 mb-4">
-                        <h3 className='weekday-heading'>
-                            {day.charAt(0).toUpperCase() + day.slice(1)}
-                        </h3>
-                        <div className="card p-3">
-                            {recipes.length > 0 ? (
-                                recipes.map((recipe: Recipe) => (
-                                    <MealCard
-                                        key={recipe._id}
-                                        _id={recipe._id}
-                                        image_url={recipe.image_url || ''}
-                                        name={recipe.name}
-                                        category={recipe.category || ''}
-                                        instructions={recipe.instructions}
-                                        ingredients={recipe.ingredients}
-                                    />
-                                ))
-                            ) : (
-                                <p>No meals planned for this day.</p>
-                            )}
+const Week: React.FC<WeekProps> = (props) => {
+    return <div>
+        <h1>{props.user.name}'s Plan</h1>
+        <ul>
+            <div className="day-card">
+                <h2>Sunday</h2>
+                <ul>
+                    {[
+                        { name: 'Sunday', key: 'sunday' },
+                        { name: 'Monday', key: 'monday' },
+                        { name: 'Tuesday', key: 'tuesday' },
+                        { name: 'Wednesday', key: 'wednesday' },
+                        { name: 'Thursday', key: 'thursday' },
+                        { name: 'Friday', key: 'friday' },
+                        { name: 'Saturday', key: 'saturday' },
+                    ].map(day => (
+                        <div
+                            className="day-card"
+                            key={day.key}
+                            style={{
+                                border: '1px solid #ccc',
+                                borderRadius: '8px',
+                                margin: '8px 0',
+                                padding: '12px',
+                            }}
+                        >
+                            <h2>{day.name}</h2>
+                            <ul>
+                                {props.user.recipes
+                                    .filter(recipe => recipe.day === day.key)
+                                    .map((recipe, idx) => (
+                                        <li key={idx}>{recipe.name}</li>
+                                    ))}
+                            </ul>
                         </div>
-                    </div>
-                ))}
+                    ))}
+                </ul>
             </div>
-        </div>
-    )
+        </ul>
+    </div>
 }
 
 export default Week
