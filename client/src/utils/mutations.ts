@@ -22,7 +22,7 @@ export const ADD_INGREDIENT = gql`
   }
 `;
 
-export const ADD_RECIPES = gql`
+export const ADD_RECIPE = gql`
   mutation addRecipes($userId: ID!, $recipes: String!) {
     addRecipes(userId: $userId, recipes: $recipes) {
       _id
