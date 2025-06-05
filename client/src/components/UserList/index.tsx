@@ -14,7 +14,7 @@ interface UserListProps {
 
 const UserList: React.FC<UserListProps> = ({ users, recipe }) => {
   if (!users.length) {
-    return <h3>No Users Yet</h3>;
+    return <h3>No Recipes Yet</h3>;
   }
 
   return (

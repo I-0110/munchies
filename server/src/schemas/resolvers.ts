@@ -19,15 +19,17 @@ interface IAddUserArgs {
 }
 
 interface IIngredientArgs {
-  name: string
-  calories: number
+  ingredient: string
+  measure: string
+  // calories: number
 }
 
 interface IAddRecipesArgs {
   input: {
     day: string
+    mealId: string
     name: string
-    author?: string
+    category?: string
     instructions:string
     image_url?: string
     video_url?: string
@@ -80,38 +82,52 @@ const resolvers = {
     },
     addRecipes: async (_parent: any, { input }: IAddRecipesArgs, context: IContext) => {
       if (context.user) {
-          const { day, name, author, instructions, image_url, video_url } = input
+          const { day, mealId, name, category, instructions, image_url, video_url } = input
           const ingredientList = []
           
           for (const ingredient of input.ingredients) {
-            console.log(ingredient)
             const newIngredient = await Ingredient.create({ ...ingredient })
             ingredientList.push((newIngredient._id))
           }
-          const recipe = await Recipe.create({ day, name, author, instructions, image_url, video_url, ingredients: ingredientList })
-
-          const updatedUser = await User.findOneAndUpdate(
+          const recipe = await Recipe.create({ day, mealId, name, category, instructions, image_url, video_url, ingredients: ingredientList })
+          console.log(recipe)
+          await User.findOneAndUpdate(
             { _id: context.user._id },
-            { $push: { recipes: recipe } },
+            { $addToSet: { recipes: recipe } },
             {
               new: true,
               runValidators: true,
             }
             );
 
-          return await updatedUser?.populate({
-            path: 'recipes',
-            populate: {
-              path: 'ingredients',
-              model: 'Ingredient',
-            },
-          });
+          return 
       }
       throw AuthenticationError
     },
-    removeUser: async (_parent: any, _args: any, context: IContext): Promise<IUser | null> => {
+    removeUser: async (_parent: any, _args: any, context: IContext) => {
       if (context.user) {
-        return await User.findOneAndDelete({ email: context.user.email });
+        const recipes = await User.findOne({ _id: context.user._id }, 'recipes');
+
+        if (recipes && Array.isArray(recipes.recipes)) {
+          for (const recipe of recipes.recipes) {
+            const ingredients = await Recipe.findOne(
+              { 
+                _id: recipe
+              }, 'ingredients')
+            
+            
+            if (ingredients && Array.isArray(ingredients.ingredients)) {
+              for (const ingredient of ingredients.ingredients) {
+                await Ingredient.findOneAndDelete({ _id: ingredient });
+              }
+            }
+
+            await Recipe.findOneAndDelete({ _id: recipe });
+          }
+        }
+
+        await User.findOneAndDelete({ _id: context.user._id })
+        return
       }
       throw AuthenticationError;
     },

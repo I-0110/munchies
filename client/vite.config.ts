@@ -1,16 +1,25 @@
-import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite'
 
-// https://vitejs.dev/config/
+// https://vitejs.dev/config/ 
 export default defineConfig({
   server: {
     port: 3000,
     open: true,
     proxy: {
-    '/graphql': {
+      '/graphql': {
         target: 'http://localhost:3001',
         changeOrigin: true,
         secure: false,
       },
+      '/api': {                    // <---- Add this
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      }
     },
   },
+  plugins: [
+    tailwindcss()
+  ]
 });
