@@ -5,6 +5,8 @@ import { LOGIN_USER } from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
+import veggies from '/veggies.mp4';
+
 const Login = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [login, { error, data }] = useMutation(LOGIN_USER);
@@ -41,20 +43,20 @@ const Login = () => {
   };
 
   return (
-    <main className="flex-row justify-center mb-4">
-      <div className="col-12 col-lg-10">
-        <div className="card">
-          <h4 className="card-header bg-dark text-light p-2">Login</h4>
-          <div className="card-body">
+    <main className="flex items-center justify-center h-screen">
+      <div className="min-w-fit flex-col-reverse border bg-(color:--color-backrgound) px-6 py-14 shadow-md rounded-[4px]">
+        <form className="flex flex-col text-sm rounded-md">
+          <h4 className="text-2xl font-bold text-gray-900 my-5 text-center">Login</h4>
+          <div>
             {data ? (
               <p>
                 Success! You may now head{' '}
                 <Link to="/">back to the homepage.</Link>
               </p>
             ) : (
-              <form onSubmit={handleFormSubmit}>
+              <div onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
                 <input
-                  className="form-input"
+                  className="mt-1 flex rounded-[4px] border p-3"
                   placeholder="Your email"
                   name="email"
                   type="email"
@@ -62,7 +64,7 @@ const Login = () => {
                   onChange={handleChange}
                 />
                 <input
-                  className="form-input"
+                  className="mt-1 flex rounded-[4px] border p-3"
                   placeholder="******"
                   name="password"
                   type="password"
@@ -70,23 +72,26 @@ const Login = () => {
                   onChange={handleChange}
                 />
                 <button
-                  className="btn btn-block btn-info"
+                  className="mt-1 mb-5 w-full border p-3 bg-gradient-to-r from-[#D72638] bg-[#A2A2BE] text-white rounded-[4px]"
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
                   Submit
                 </button>
-              </form>
+              </div>
             )}
-
             {error && (
-              <div className="my-3 p-3 bg-danger text-white">
+              <div className="my-3 p-3 bg-red-600 text-white rounded-md">
                 {error.message}
               </div>
             )}
           </div>
-        </div>
+        </form>
       </div>
+      <video
+        src={veggies} autoPlay loop muted playsInline
+        className='absolute w-full h-full object-cover z-[-1]'
+      ></video>
     </main>
   );
 };

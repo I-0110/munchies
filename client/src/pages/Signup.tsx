@@ -59,11 +59,11 @@ const Signup = () => {
               </p>
             ) : (
               <div onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
-                <h4 className="text-2xl font-bold text-gray-900 mb-5 text-center">Register</h4>
+                <h4 className="text-2xl font-bold text-gray-900 my-5 text-center">Register</h4>
                 <input
                   placeholder="Your name"
                   name="name"
-                  className="mt-1 flex rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-yellow-500"
+                  className="mt-1 flex rounded-[4px] border p-3"
                   type="text"
                   value={formState.name}
                   onChange={handleChange}
@@ -71,7 +71,7 @@ const Signup = () => {
                 <input
                   placeholder="Your email"
                   name="email"
-                  className="mt-1 flex rounded-[4px] border p-3 hover:outline-none focus:outline-none hover:border-yellow-500"
+                  className="mt-1 flex rounded-[4px] border p-3"
                   type="email"
                   value={formState.email}
                   onChange={handleChange}
@@ -79,13 +79,13 @@ const Signup = () => {
                 <input
                   placeholder="******"
                   name="password"
-                  className="mt-1 flex border rounded-[4px] p-3 hover:outline-none focus:outline-none hover:border-yellow-500"
+                  className="mt-1 flex border rounded-[4px] p-3"
                   type="password"
                   value={formState.password}
                   onChange={handleChange}
                 />
                 <button
-                  className="mt-1 mb-5 w-full border p-2 bg-gradient-to-r from-[#D72638] bg-[#A2A2BE] text-white rounded-[4px] hover:bg-slate-400 scale-99 duration-300" 
+                  className="mt-1 mb-5 w-full border p-3 bg-gradient-to-r from-[#D72638] bg-[#A2A2BE] text-white rounded-[4px]" 
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
