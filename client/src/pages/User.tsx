@@ -40,7 +40,7 @@ const User = () => {
         <button
           className="btn btn-lg btn-danger m-2"
           onClick={() => {
-        Auth.logout()
+            Auth.logout()
           }}
         >
           Logout
@@ -48,16 +48,14 @@ const User = () => {
 
         <button className="btn btn-lg btn-danger m-2"
           onClick={async () => {
-        await deleteUser({ variables: { userId: userData.data._id } });
-        Auth.logout();
+            await deleteUser({ variables: { userId: userData.data._id } });
+            Auth.logout();
           }}
         >
           Delete Account
         </button>
-
-        <Week user={user} />
       </section>
-      <Week user={user} />
+        <Week user={user} />
     </div>
   );
 }

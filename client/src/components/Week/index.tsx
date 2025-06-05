@@ -12,7 +12,6 @@ const Week: React.FC<WeekProps> = (props) => {
         <h1>{props.user.name}'s Plan</h1>
         <ul>
             <div className="day-card">
-                <h2>Sunday</h2>
                 <ul>
                     {[
                         { name: 'Sunday', key: 'sunday' },
