@@ -12,11 +12,24 @@ export const ADD_USER = gql`
   }
 `;
 
+export const ADD_INGREDIENT = gql`
+  mutation addIngredient($userId: ID!, $calories: String!) {
+    addIngredient(userId: $userId, calories: $calories) {
+      _id
+      name
+      calories
+    }
+  }
+`;
 
 export const ADD_RECIPE = gql`
-  mutation AddRecipes($input: RecipeInput!) {
-    addRecipes(input: $input)
-}
+  mutation addRecipes($userId: ID!, $recipes: String!) {
+    addRecipes(userId: $userId, recipes: $recipes) {
+      _id
+      username
+      recipes
+    }
+  }
 `;
 
 export const LOGIN_USER = gql`
