@@ -19,25 +19,21 @@ export const QUERY_SINGLE_USER = gql`
 `;
 
 export const QUERY_ME = gql`
-query me {
+uery Me {
   me {
-    _id
-    email
     name
-    password
     recipes {
-      _id
-      author
+      category
       day
       image_url
-      ingredients {
-        _id
-        calories
-        name
-      }
       instructions
+      mealId
       name
       video_url
+      ingredients {
+        ingredient
+        measure
+      }
     }
   }
 }
