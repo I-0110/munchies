@@ -1,5 +1,28 @@
 import { Recipe, TmdbReturn, convertToRecipe } from "../models/Recipe";
 
+
+const retreiveTMDBRecipies = async (meal: string): Promise<Recipe[]> => {
+    try {
+        const response = await fetch(`/api/tmdb/meals/${meal}`,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+        },
+        });
+
+        if (!response.ok) {
+            throw new Error('Invalid API response');
+        };
+
+        const returnedList: TmdbReturn = await response.json();
+        const recipeList: Recipe[] = returnedList.meals.map(convertToRecipe)
+        return recipeList;
+    } catch (error) {
+        console.error(`Error: ${error}`);
+        return [];
+    }
+}
+
 // const exampleResponse = {
 //     "meals": [
 //         {
@@ -86,29 +109,5 @@ import { Recipe, TmdbReturn, convertToRecipe } from "../models/Recipe";
 //     { ingredient: "Parmigiano-Reggiano" measure: "sprinkling" },
 //   ]
 // };
-
-const retreiveTMDBRecipies = async (meal: string): Promise<Recipe[]> => {
-    try {
-        const response = await fetch(`/TMDB/meals/${meal}`,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-        if (!response.ok) {
-            throw new Error('Invalid API response');
-        };
-
-        const returnedList: TmdbReturn = await response.json();
-        const recipeList: Recipe[] = returnedList.results.map(convertToRecipe)
-
-        console.log(recipeList);
-        return recipeList;
-    } catch (error) {
-        console.error(`Error: ${error}`);
-        return [];
-    }
-}
 
 export { retreiveTMDBRecipies }
