@@ -4,8 +4,9 @@ import { Schema, model, Document } from 'mongoose';
 interface IRecipe extends Document {
   _id: string;
   day: string;
+  mealId: string;
   name: string;
-  author?: string;
+  category?: string;
   instructions:string;
   image_url?: string;
   video_url?: string;
@@ -21,13 +22,19 @@ const recipeSchema = new Schema<IRecipe>(
       unique: false,
       trim: true,
     },
+    mealId: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
     name: {
       type: String,
       required: true,
       unique: false,
       trim: true,
     },
-    author: {
+    category: {
       type: String,
       required: false,
       unique: false,

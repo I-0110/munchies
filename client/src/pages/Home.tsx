@@ -1,38 +1,35 @@
 import { useState } from 'react';
-
 import SearchInput from '../components/Search';
-
 import MealCard from '../components/MealCard';
 
-type Meal = {
-  idMeal: string;
-  strMeal: string;
-  strCategory: string;
-  strInstructions: string;
-  strMealThumb: string;
-  strYoutube: string;
-};
 
-type MealAPIResponse = {
-  meals: Meal[] | null;
-}
+import { QUERY_USERS } from '../utils/queries';
+import { useQuery } from '@apollo/client';
+import { Recipe } from '../utils/models/Recipe';
+import { retreiveTMDBRecipies } from '../utils/API/mealsAPI';
+
+import { ADD_RECIPE } from '../utils/mutations';
+import { convertToRecipe } from '../utils/models/Recipe'
 
 const Home = () => {
 
+  const { loading: userLoading } = useQuery(QUERY_USERS);
+
   const [query, setQuery] = useState('');
-  const [result, setResult] = useState<MealAPIResponse | null>(null);
+  const [result, setResult] = useState<Recipe[] | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  
+  const [addRecipe] = useMutation(ADD_RECIPE)
 
   const handleSearch = async () => {
     setSearchLoading(true);
     try {
-      const response = await fetch(`https://themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(query)}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      } 
-      const data = await response.json();
+      const response = await retreiveTMDBRecipies(query); 
+      const data = await response;
+      
       setResult(data);
       console.log(`API response:`, data);
+
     } catch (error) {
       console.error('Fetch error:', error);
     } finally {
@@ -40,6 +37,38 @@ const Home = () => {
     }
   };
 
+  const handleSave = async (mealId: string, name: string, category: string, instructions: string, image_url: string, video_url: string, ingredients: [], day:string) => {
+    console.log("I'm running!")
+    console.log(ingredients)
+    try {
+
+      const response = await addRecipe({
+        variables: { 
+          input: { 
+            day, 
+            mealId, 
+            name, 
+            category, 
+            instructions, 
+            image_url, 
+            video_url, 
+            ingredients: ingredients 
+          } 
+        },
+      });
+
+      if (!response) {
+        throw new Error("Recipe did not save!");
+      }
+
+      console.log("Recipe successfully saved!");
+    } catch (err) {
+      console.error("Recipe failed to save...", err);
+    }
+  };
+
+  // const users = data?.users || [];
+  
   return (
     <main>
       <div className="flex-row justify-center">
@@ -51,10 +80,10 @@ const Home = () => {
             <SearchInput value={query} onChange={setQuery} handleSearch={handleSearch}  />
 
             {result ? (
-              Array.isArray(result.meals) ? (
+              Array.isArray(result) ? (
               <div>
                 <h3>Recipes:</h3>
-                <div className='meal-list'>{result.meals.map((meal: any) => (
+                <div className='meal-list'>{result.map((meal: any) => (
                   <MealCard 
                     key={meal.idMeal}
                     _id={meal.idMeal} 
@@ -66,6 +95,7 @@ const Home = () => {
                     ingredients={[]}
                   />
                 ))}
+
                 </div>
               </div>
               ) : (

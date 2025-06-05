@@ -22,14 +22,10 @@ export const ADD_INGREDIENT = gql`
   }
 `;
 
-export const ADD_RECIPES = gql`
-  mutation addRecipes($userId: ID!, $recipes: String!) {
-    addRecipes(userId: $userId, recipes: $recipes) {
-      _id
-      username
-      recipes
-    }
-  }
+export const ADD_RECIPE = gql`
+  mutation AddRecipes($input: RecipeInput!) {
+  addRecipes(input: $input)
+}
 `;
 
 export const LOGIN_USER = gql`
