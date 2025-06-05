@@ -48,9 +48,9 @@ const Signup = () => {
   };
 
   return (
-    <main className="flex items-center justify-center">
-      <div className="min-w-fit flex-col border bg-white px-6 py-14 shadow-md rounded-[4px] ">
-        <form className="space-y-4">
+    <main className="flex items-center justify-center h-screen">
+      <div className="min-w-fit flex-col-reverse border bg-(color:--color-backrgound) px-6 py-14 shadow-md rounded-[4px]">
+        <form className="flex flex-col text-sm rounded-md">
           <div>
             {data ? (
               <p>
@@ -58,7 +58,7 @@ const Signup = () => {
                 <Link to="/" className="text-blue-600 underline">back to the homepage.</Link>
               </p>
             ) : (
-              <form onSubmit={handleFormSubmit} className="space-y-2">
+              <div onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
                 <h4 className="text-2xl font-bold text-gray-900 mb-5 text-center">Register</h4>
                 <input
                   placeholder="Your name"
@@ -85,13 +85,13 @@ const Signup = () => {
                   onChange={handleChange}
                 />
                 <button
-                  className="mt-5 w-full border p-2 bg-gradient-to-r from-gray-800 bg-gray-500 text-white rounded-[4px] hover:bg-slate-400 scale-105 duration-300" 
+                  className="mt-1 mb-5 w-full border p-2 bg-gradient-to-r from-[#D72638] bg-[#A2A2BE] text-white rounded-[4px] hover:bg-slate-400 scale-99 duration-300" 
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
                   Submit
                 </button>
-              </form>
+              </div>
             )}
             {error && (
               <div className="my-3 p-3 bg-red-600 text-white rounded-md">
