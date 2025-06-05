@@ -2,9 +2,6 @@ import { useState } from 'react';
 import SearchInput from '../components/Search';
 import MealCard from '../components/MealCard';
 
-
-import { QUERY_USERS } from '../utils/queries';
-import { useQuery } from '@apollo/client';
 import { Recipe } from '../utils/models/Recipe';
 import { retreiveTMDBRecipies } from '../utils/API/mealsAPI';
 
@@ -12,14 +9,11 @@ import { ADD_RECIPE } from '../utils/mutations';
 import { convertToRecipe } from '../utils/models/Recipe'
 
 const Home = () => {
-
-  const { loading: userLoading } = useQuery(QUERY_USERS);
-
   const [query, setQuery] = useState('');
   const [result, setResult] = useState<Recipe[] | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
   
-  const [addRecipe] = useMutation(ADD_RECIPE)
+  const [addRecipe] = useState(ADD_RECIPE)
 
   const handleSearch = async () => {
     setSearchLoading(true);
@@ -67,8 +61,6 @@ const Home = () => {
     }
   };
 
-  // const users = data?.users || [];
-  
   return (
     <main>
       <div className="flex-row justify-center">
