@@ -54,6 +54,8 @@ const User = () => {
         >
           Delete Account
         </button>
+
+        <Week user={user} />
       </section>
       <Week user={user} />
     </div>
