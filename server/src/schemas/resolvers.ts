@@ -111,6 +111,9 @@ const resolvers = {
     },
     removeUser: async (_parent: any, _args: any, context: IContext) => {
       if (context.user) {
+<<<<<<< HEAD
+        return await User.findOneAndDelete({ email: context.user._id });
+=======
         const recipes = await User.findOne({ _id: context.user._id }, 'recipes');
 
         if (recipes && Array.isArray(recipes.recipes)) {
@@ -133,6 +136,7 @@ const resolvers = {
 
         await User.findOneAndDelete({ _id: context.user._id })
         return
+>>>>>>> c360210450c6cd42ad8a4cd511ed4538c73b52b4
       }
       throw AuthenticationError;
     },

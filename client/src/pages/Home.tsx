@@ -4,11 +4,6 @@ import SearchInput from '../components/Search';
 
 import MealCard from '../components/MealCard';
 
-import UserList from '../components/UserList';
-
-import { QUERY_USERS } from '../utils/queries';
-import { useQuery } from '@apollo/client';
-
 type Meal = {
   idMeal: string;
   strMeal: string;
@@ -23,7 +18,6 @@ type MealAPIResponse = {
 }
 
 const Home = () => {
-  const { loading: userLoading, data } = useQuery(QUERY_USERS);
 
   const [query, setQuery] = useState('');
   const [result, setResult] = useState<MealAPIResponse | null>(null);
@@ -46,13 +40,11 @@ const Home = () => {
     }
   };
 
-  const users = data?.users || [];
-
   return (
     <main>
       <div className="flex-row justify-center">
         <div className="col-12 col-md-10 my-3">
-          {(userLoading || searchLoading) ? (
+          {searchLoading ? (
             <div>Loading...</div>
           ) : (
           <div>
@@ -80,11 +72,6 @@ const Home = () => {
                 <p>No meals found from for "{query}"!</p>
               )
             ) : null}
-
-            <UserList
-              users={users}
-              recipe="Here are current recipes from munchies' users..." 
-            />
           </div>
           )}
         </div>
