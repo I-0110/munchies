@@ -7,6 +7,8 @@ import Auth from '../utils/auth';
 
 import { DELETE_USER } from '../utils/mutations';
 
+import Week from '../components/Week';
+
 const User = () => {
   const userData = Auth.getUser();
 
@@ -53,6 +55,7 @@ const User = () => {
           Delete Account
         </button>
       </section>
+        <Week user={user} />
     </div>
   );
 }

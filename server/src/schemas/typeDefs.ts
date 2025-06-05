@@ -10,8 +10,9 @@ const typeDefs = `
   type Recipe {
     _id: ID
     day: String
+    mealId: String
     name: String
-    author: String
+    category: String
     instructions: String
     image_url: String
     video_url: String
@@ -20,7 +21,8 @@ const typeDefs = `
 
   type Ingredient {
     _id: ID
-    name: String
+    ingredient: String
+    measure: String
     calories: Float
   }
 
@@ -37,8 +39,9 @@ const typeDefs = `
 
   input RecipeInput {
     day: String!
+    mealId: String!
     name: String!
-    author: String
+    category: String
     instructions: String!
     image_url: String
     video_url: String
@@ -46,7 +49,8 @@ const typeDefs = `
   }
 
   input IngredientInput {
-    name: String!
+    ingredient: String!
+    measure: String
     calories: Float
   }
 
@@ -59,8 +63,8 @@ const typeDefs = `
   type Mutation {
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
-    addRecipes( input: RecipeInput!): User
-    removeUser: User
+    addRecipes( input: RecipeInput!): Boolean
+    removeUser: Boolean
     removeRecipes(day: String!, recipeId: String!): User
   }
 `;
