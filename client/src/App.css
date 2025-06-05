@@ -1,6 +1,10 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @theme {
+  --*: initial;
+  
   --color-header: rgb(87, 93, 144);
   --color-backrgound: rgb(221, 213, 208);
   --color-font: rgb(89, 95, 114);

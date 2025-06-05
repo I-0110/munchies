@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import SearchInput from '../components/Search';
 import MealCard from '../components/MealCard';
-// import UserList from '../components/UserList';
-// import { QUERY_USERS } from '../utils/queries';
-// import { useQuery, useMutation } from '@apollo/client';
+
 import { useMutation } from '@apollo/client';
 import { ADD_RECIPE } from '../utils/mutations';
 import { convertToRecipe } from '../utils/models/Recipe'
@@ -80,8 +78,6 @@ const Home = () => {
       console.error("Recipe failed to save...", err);
     }
   };
-
-  // const users = data?.users || [];
 
   return (
     <main>
