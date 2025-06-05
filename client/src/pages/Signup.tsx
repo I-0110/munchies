@@ -6,6 +6,8 @@ import { ADD_USER } from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
+import veggies from '/veggies.mp4';
+
 const Signup = () => {
   const [formState, setFormState] = useState({
     name: '',
@@ -46,60 +48,63 @@ const Signup = () => {
   };
 
   return (
-    <main className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <div className="card">
-          <h4 className="card-header bg-dark text-light p-2">Register</h4>
-          <div className="card-body">
+    <main className="flex items-center justify-center h-screen">
+      <div className="min-w-fit flex-col-reverse border bg-(color:--color-backrgound) px-6 py-14 shadow-md rounded-[4px]">
+        <form className="flex flex-col text-sm rounded-md">
+          <div>
             {data ? (
               <p>
                 Success! You may now head{' '}
-                <Link to="/">back to the homepage.</Link>
+                <Link to="/" className="text-blue-600 underline">back to the homepage.</Link>
               </p>
             ) : (
-              <form onSubmit={handleFormSubmit}>
+              <div onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
+                <h4 className="text-2xl font-bold text-gray-900 my-5 text-center">Register</h4>
                 <input
-                  className="form-input"
-                  placeholder="Your username"
+                  placeholder="Your name"
                   name="name"
+                  className="mt-1 flex rounded-[4px] border p-3"
                   type="text"
                   value={formState.name}
                   onChange={handleChange}
                 />
                 <input
-                  className="form-input"
                   placeholder="Your email"
                   name="email"
+                  className="mt-1 flex rounded-[4px] border p-3"
                   type="email"
                   value={formState.email}
                   onChange={handleChange}
                 />
                 <input
-                  className="form-input"
                   placeholder="******"
                   name="password"
+                  className="mt-1 flex border rounded-[4px] p-3"
                   type="password"
                   value={formState.password}
                   onChange={handleChange}
                 />
                 <button
-                  className="btn btn-block btn-info"
+                  className="mt-1 mb-5 w-full border p-3 bg-gradient-to-r from-[#D72638] bg-[#A2A2BE] text-white rounded-[4px]" 
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
                   Submit
                 </button>
-              </form>
+              </div>
             )}
-
             {error && (
-              <div className="my-3 p-3 bg-danger text-white">
+              <div className="my-3 p-3 bg-red-600 text-white rounded-md">
                 {error.message}
               </div>
             )}
-          </div>
-        </div>
+          </div>         
+        </form>
       </div>
+      <video
+        src={veggies} autoPlay loop muted playsInline
+        className='absolute w-full h-full object-cover z-[-1]'
+      ></video> 
     </main>
   );
 };
