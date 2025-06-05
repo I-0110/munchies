@@ -12,6 +12,14 @@
   --color-accent: rgb(162, 162, 190);
 }
 
+@theme {
+  --color-header: rgb(87, 93, 144);
+  --color-backrgound: rgb(221, 213, 208);
+  --color-font: rgb(89, 95, 114);
+  --color-button: rgb(215, 38, 56);
+  --color-accent: rgb(162, 162, 190);
+}
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 /* Document
    ========================================================================== */
