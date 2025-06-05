@@ -1,13 +1,11 @@
 import { useState } from 'react';
-
 import SearchInput from '../components/Search';
-
 import MealCard from '../components/MealCard';
-
 import UserList from '../components/UserList';
-
 import { QUERY_USERS } from '../utils/queries';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
+import { ADD_RECIPE } from '../utils/mutations';
+import { convertToRecipe } from '../utils/models/Recipe'
 
 type Meal = {
   idMeal: string;
@@ -28,6 +26,8 @@ const Home = () => {
   const [query, setQuery] = useState('');
   const [result, setResult] = useState<MealAPIResponse | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  
+  const [addRecipe] = useMutation(ADD_RECIPE)
 
   const handleSearch = async () => {
     setSearchLoading(true);
@@ -36,13 +36,48 @@ const Home = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       } 
-      const data = await response.json();
-      setResult(data);
-      console.log(`API response:`, data);
+
+      const returnedList = await response.json();
+      console.log(returnedList)
+      const recipeList = returnedList.meals ? returnedList.meals.map(convertToRecipe) : null;
+      setResult({ meals: recipeList });
+      console.log(`API response:`, recipeList
+
+      );
     } catch (error) {
       console.error('Fetch error:', error);
     } finally {
       setSearchLoading(false);
+    }
+  };
+
+  const handleSave = async (mealId: string, name: string, category: string, instructions: string, image_url: string, video_url: string, ingredients: [], day:string) => {
+    console.log("I'm running!")
+    console.log(ingredients)
+    try {
+
+      const response = await addRecipe({
+        variables: { 
+          input: { 
+            day, 
+            mealId, 
+            name, 
+            category, 
+            instructions, 
+            image_url, 
+            video_url, 
+            ingredients: ingredients 
+          } 
+        },
+      });
+
+      if (!response) {
+        throw new Error("Recipe did not save!");
+      }
+
+      console.log("Recipe successfully saved!");
+    } catch (err) {
+      console.error("Recipe failed to save...", err);
     }
   };
 
@@ -63,17 +98,41 @@ const Home = () => {
               <div>
                 <h3>Recipes:</h3>
                 <div className='meal-list'>{result.meals.map((meal: any) => (
-                  <MealCard 
-                    key={meal.idMeal}
-                    _id={meal.idMeal} 
-                    name={meal.strMeal}
-                    category={meal.strCategory}
-                    instructions={meal.strInstructions}
-                    image_url={meal.strMealThumb}
-                    video_url={meal.strYoutube}
-                    ingredients={[]}
-                  />
-                ))}
+                  <div key={meal.idMeal}>
+                    <MealCard 
+                      _id={meal.idMeal} 
+                      name={meal.strMeal}
+                      category={meal.strCategory}
+                      instructions={meal.strInstructions}
+                      image_url={meal.strMealThumb}
+                      video_url={meal.strYoutube}
+                      ingredients={[]}
+                    />
+                    <select 
+                      name="choice" 
+                      multiple={false} 
+                      onChange={(e) => handleSave(
+                      meal.idMeal, 
+                      meal.strMeal, 
+                      meal.strCategory, 
+                      meal.strInstructions, 
+                      meal.strMealThumb, 
+                      meal.strYoutube, 
+                      meal.ingredients, 
+                      (e.target as HTMLSelectElement).value
+                      )}
+                    >
+                      <option value="" >Choose a Day to Save</option>
+                      <option value="sunday">Sunday</option>
+                      <option value="monday">Monday</option>
+                      <option value="tuesday">Tuesday</option>
+                      <option value="wednesday">Wednesday</option>
+                      <option value="thursday">Thursday</option>
+                      <option value="friday">Friday</option>
+                      <option value="saturday">Saturday</option>
+                    </select>
+                  </div>
+                  ))}
                 </div>
               </div>
               ) : (
@@ -94,3 +153,5 @@ const Home = () => {
 };
 
 export default Home;
+
+
