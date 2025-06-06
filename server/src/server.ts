@@ -9,6 +9,8 @@ import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './utils/auth.js';
 import apiRoutes from './routes/index.js';
 
+import cleanDB from './seeds/cleanDB.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -20,6 +22,8 @@ const server = new ApolloServer({
 const startApolloServer = async () => {
   await server.start();
   await db();
+
+  await cleanDB();
 
   const PORT = process.env.PORT || 3001;
   const app = express();

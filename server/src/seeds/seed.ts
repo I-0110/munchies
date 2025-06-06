@@ -1,26 +1,22 @@
-// import db from '../config/connection.js';
-// import { Day } from '../models/index.js';
-// import daySeeds from './dayData.json' with { type: "json" };
-// import cleanDB from './cleanDB.js';
+import db from '../config/connection.js';
+import cleanDB from './cleanDB.js';
 
 
-// const seedDatabase = async (): Promise<void> => {
-//   try {
-//     await db();
-//     await cleanDB();
+const seedDatabase = async (): Promise<void> => {
+  try {
+    await db();
+    await cleanDB();
 
-//     await Day.insertMany(daySeeds);
+    console.log('Seeding completed successfully!');
+    process.exit(0);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('Error seeding database:', error.message);
+    } else {
+      console.error('Unknown error seeding database');
+    }
+    process.exit(1);
+  }
+};
 
-//     console.log('Seeding completed successfully!');
-//     process.exit(0);
-//   } catch (error: unknown) {
-//     if (error instanceof Error) {
-//       console.error('Error seeding database:', error.message);
-//     } else {
-//       console.error('Unknown error seeding database');
-//     }
-//     process.exit(1);
-//   }
-// };
-
-// seedDatabase();
+seedDatabase();
