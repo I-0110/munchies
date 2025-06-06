@@ -21,5 +21,9 @@
   "devDependencies": {
     "concurrently": "^8.2.2",
     "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "tailwindcss": "^4.0.0"
   }
 }
