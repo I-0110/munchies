@@ -50,7 +50,7 @@ const Signup = () => {
   return (
     <main className="flex items-center justify-center h-screen">
       <div className="min-w-fit flex-col-reverse border bg-(color:--color-backrgound) px-6 py-14 shadow-md rounded-[4px]">
-        <form className="flex flex-col text-sm rounded-md">
+        <form onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
           <div>
             {data ? (
               <p>
@@ -58,7 +58,7 @@ const Signup = () => {
                 <Link to="/" className="text-blue-600 underline">back to the homepage.</Link>
               </p>
             ) : (
-              <div onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
+              <div className="flex flex-col text-sm rounded-md">
                 <h4 className="text-2xl font-bold text-gray-900 my-5 text-center">Register</h4>
                 <input
                   placeholder="Your name"

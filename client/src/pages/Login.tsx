@@ -45,7 +45,7 @@ const Login = () => {
   return (
     <main className="flex items-center justify-center h-screen">
       <div className="min-w-fit flex-col-reverse border bg-(color:--color-backrgound) px-6 py-14 shadow-md rounded-[4px]">
-        <form className="flex flex-col text-sm rounded-md">
+        <form onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
           <h4 className="text-2xl font-bold text-gray-900 my-5 text-center">Login</h4>
           <div>
             {data ? (
@@ -54,7 +54,7 @@ const Login = () => {
                 <Link to="/">back to the homepage.</Link>
               </p>
             ) : (
-              <div onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
+              <div className="flex flex-col text-sm rounded-md">
                 <input
                   className="mt-1 flex rounded-[4px] border p-3"
                   placeholder="Your email"
