@@ -2,11 +2,11 @@ import { Ingredient, Recipe, User } from '../models/index.js';
 
 const cleanDB = async (): Promise<void> => {
   try {
-    await User.collection.drop()
-    await Recipe.collection.drop()
-    await Ingredient.collection.drop()
+    // await User.collection.drop()
+    // await Recipe.collection.drop()
+    // await Ingredient.collection.drop()
 
-    console.log("DBs dropped!")
+    console.log("No Dbs to drop!")
 
   } catch (err) {
     console.error('Error cleaning collections:', err);
