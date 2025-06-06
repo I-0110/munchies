@@ -2,7 +2,7 @@
 
 @theme {
   --color-header: rgb(87, 93, 144);
-  --color-backrgound: rgb(221, 213, 208);
+  --color-background: rgb(221, 213, 208);
   --color-font: rgb(89, 95, 114);
   --color-button: rgb(215, 38, 56);
   --color-accent: rgb(162, 162, 190);
@@ -20,22 +20,6 @@
   /* 1 */
   -webkit-text-size-adjust: 100%;
   /* 2 */
-}
-
-/* Sections
-   ========================================================================== */
-/**
- * Remove the margin in all browsers.
- */
-body {
-  margin: 0;
-}
-
-/**
- * Render the `main` element consistently in IE.
- */
-main {
-  display: block;
 }
 
 /**
@@ -361,6 +345,7 @@ END NORMALIZE CSS
 html,
 body {
   min-height: 100%;
+  min-width: 100%;
 }
 
 body {
