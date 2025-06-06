@@ -1,4 +1,4 @@
-import { Ingredient, Recipe, User } from '../models/index.js';
+// import { Ingredient, Recipe, User } from '../models/index.js';
 
 const cleanDB = async (): Promise<void> => {
   try {
