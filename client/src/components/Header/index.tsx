@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { type MouseEvent} from 'react';
 import Auth from '../../utils/auth';
 
 const Header = () => {
+  const path = useLocation().pathname
   const logout = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     Auth.logout();
@@ -27,15 +28,18 @@ const Header = () => {
               <button className="btn btn-lg btn-light m-2" onClick={logout}>
                 Logout
               </button>
+              <Link className="btn btn-lg btn-secondary m-2" to="/add">
+                Add My Recipe
+              </Link>
             </>
           ) : (
             <>
-              <Link className="bg-button text-accent px-4 py-2 rounded-lg" to="/login">
+              {path === '/login' ? <Link className="btn btn-lg btn-secondary m-2" to="/">
+                Home
+              </Link> : <Link className="bg-button text-accent px-4 py-2 rounded-lg" to="/login">
                 Login
-              </Link>
-              <Link className="btn btn-lg btn-light m-2 bg-button" to="/signup">
-                Register
-              </Link>
+              </Link>}
+
             </>
           )}
         </div>
