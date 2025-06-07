@@ -1,9 +1,12 @@
-import { User } from '../models/index.js';
+// import { Ingredient, Recipe, User } from '../models/index.js';
 
 const cleanDB = async (): Promise<void> => {
   try {
-    await User.deleteMany({});
-    console.log('Day collection cleaned.');
+    // await User.collection.drop()
+    // await Recipe.collection.drop()
+    // await Ingredient.collection.drop()
+
+    console.log("No Dbs to drop!")
 
   } catch (err) {
     console.error('Error cleaning collections:', err);

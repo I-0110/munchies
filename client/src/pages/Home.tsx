@@ -61,9 +61,9 @@ const Home = () => {
   };
 
   return (
-    <main>
+    <main className='bg-background h-full w-screen h-screen mt-2'>
       <div className="flex-row justify-center">
-        <div className="col-12 col-md-10 my-3">
+        <div className="flex-row">
           {searchLoading ? (
             <div>Loading...</div>
           ) : (
