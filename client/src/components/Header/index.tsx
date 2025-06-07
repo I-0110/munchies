@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom';
-import { type MouseEvent } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { type MouseEvent} from 'react';
 import Auth from '../../utils/auth';
 
 const Header = () => {
+  const path = useLocation().pathname
   const logout = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     Auth.logout();
@@ -36,12 +37,13 @@ const Header = () => {
             </>
           ) : (
             <>
-              <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/login">
+            bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark"
+              {path === '/login' ? <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/">
+                Home
+              </Link> : <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/login">
                 Login
-              </Link>
-              <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/signup">
-                Register
-              </Link>
+              </Link>}
+
             </>
           )}
         </div>

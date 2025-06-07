@@ -8,11 +8,10 @@
   --color-button-dark: rgba(215, 38, 56, .90);
   --color-button-focus: rgb(512, 38, 58);
   --color-accent: rgb(162, 162, 190); 
-  --color-accent: rgb(162, 162, 190); 
 }
 
 .background-video {
-  height: 100vh;
+  height: 100%;
   width: 100%;
   float: left;
   top: 0;

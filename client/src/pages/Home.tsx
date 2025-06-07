@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import SearchInput from '../components/Search';
+import { Link } from 'react-router-dom';
 import MealCard from '../components/MealCard';
 import { useMutation } from '@apollo/client';
 import { Recipe } from '../utils/models/Recipe';
 import { retreiveTMDBRecipies } from '../utils/API/mealsAPI';
-
+import Auth from '../utils/auth';
 import { ADD_RECIPE } from '../utils/mutations';
 
 const Home = () => {
@@ -19,10 +20,7 @@ const Home = () => {
     setSearchLoading(true);
     try {
       const response = await retreiveTMDBRecipies(query); 
-      
       setResult(response);
-      console.log(`API response:`, response);
-
     } catch (error) {
       console.error('Fetch error:', error);
     } finally {
@@ -32,9 +30,7 @@ const Home = () => {
 
   const handleSave = async (mealId: string, name: string, category: string, instructions: string, image_url: string, video_url: string, ingredients: [], day:string) => {
     console.log("I'm running!")
-    console.log(ingredients)
     try {
-
       const response = await addRecipe({
         variables: { 
           input: { 
@@ -85,7 +81,7 @@ const Home = () => {
                       video_url={meal.strYoutube}
                       ingredients={[]}
                     />
-                    <select 
+                    { Auth.loggedIn() ? <select 
                       name="choice" 
                       multiple={false} 
                       onChange={(e) => handleSave(
@@ -107,7 +103,8 @@ const Home = () => {
                       <option value="thursday">Thursday</option>
                       <option value="friday">Friday</option>
                       <option value="saturday">Saturday</option>
-                    </select>
+                    </select> : 
+                    <Link className="text-center w-full border p-1 bg-gradient-to-r from-[#A2A2BE] bg-[#D72638] text-white rounded-[4px]"to="/login">Log in to save this recipe.</Link>}
                   </div>
                   ))}
 
