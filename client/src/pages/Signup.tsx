@@ -103,7 +103,7 @@ const Signup = () => {
       </div>
       <video
         src={veggies} autoPlay loop muted playsInline
-        className='background-video'
+        className='background-video object-cover'
       ></video> 
     </main>
   );

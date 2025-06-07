@@ -43,7 +43,7 @@ const Login = () => {
   };
 
   return (
-    <main className="flex items-center justify-center h-screen">
+    <main className="flex items-center justify-center h-screen w-screen">
       <div className="min-w-fit flex-col-reverse border bg-(color:--color-background) px-6 py-14 shadow-md rounded-[4px]">
         <form onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
           <h4 className="text-2xl font-bold text-gray-900 my-5 text-center">Login</h4>
@@ -72,12 +72,15 @@ const Login = () => {
                   onChange={handleChange}
                 />
                 <button
-                  className="mt-1 mb-5 w-full border p-3 bg-gradient-to-r from-[#D72638] bg-[#A2A2BE] text-white rounded-[4px]"
+                  className="mt-1 w-full border p-3 bg-gradient-to-r from-[#D72638] bg-[#A2A2BE] text-white rounded-[4px]"
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
                   Submit
                 </button>
+                <Link className="text-center mt-5 mb-5 w-full border p-3 bg-gradient-to-r from-[#A2A2BE] bg-[#D72638] text-white rounded-[4px]" to="/signup" style={{ cursor: 'pointer' }}>
+                Register
+              </Link>
               </div>
             )}
             {error && (
@@ -90,7 +93,7 @@ const Login = () => {
       </div>
       <video
         src={veggies} autoPlay loop muted playsInline
-        className='background-video'
+        className='background-video object-cover'
       ></video>
     </main>
   );
