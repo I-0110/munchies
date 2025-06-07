@@ -15,7 +15,7 @@ const Header = () => {
             Munchies
           </h1>
         </Link>
-        <h2 className="m-2000px text-background" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
+        <h2 className="text-background" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
           Plan your next meal. One meal at the time!
         </h2>
         <div>
@@ -30,11 +30,9 @@ const Header = () => {
             </>
           ) : (
             <>
-            <button>
-              <Link className="btn btn-lg btn-primary m-2" to="/login">
+              <Link className="bg-button text-accent px-4 py-2 rounded-lg" to="/login">
                 Login
               </Link>
-            </button>
               <Link className="btn btn-lg btn-light m-2 bg-button" to="/signup">
                 Register
               </Link>

@@ -30,35 +30,35 @@ const Home = () => {
     }
   };
 
-  // const handleSave = async (mealId: string, name: string, category: string, instructions: string, image_url: string, video_url: string, ingredients: [], day:string) => {
-  //   console.log("I'm running!")
-  //   console.log(ingredients)
-  //   try {
+  const handleSave = async (mealId: string, name: string, category: string, instructions: string, image_url: string, video_url: string, ingredients: [], day:string) => {
+    console.log("I'm running!")
+    console.log(ingredients)
+    try {
 
-  //     const response = await addRecipe({
-  //       variables: { 
-  //         input: { 
-  //           day, 
-  //           mealId, 
-  //           name, 
-  //           category, 
-  //           instructions, 
-  //           image_url, 
-  //           video_url, 
-  //           ingredients: ingredients 
-  //         } 
-  //       },
-  // //     });
+      const response = await addRecipe({
+        variables: { 
+          input: { 
+            day, 
+            mealId, 
+            name, 
+            category, 
+            instructions, 
+            image_url, 
+            video_url, 
+            ingredients: ingredients 
+          } 
+        },
+      });
 
-  //     if (!response) {
-  //       throw new Error("Recipe did not save!");
-  //     }
+      if (!response) {
+        throw new Error("Recipe did not save!");
+      }
 
-  //     console.log("Recipe successfully saved!");
-  //   } catch (err) {
-  //     console.error("Recipe failed to save...", err);
-  //   }
-  // };
+      console.log("Recipe successfully saved!");
+    } catch (err) {
+      console.error("Recipe failed to save...", err);
+    }
+  };
 
   return (
     <main className='bg-background h-full w-screen h-screen mt-2'>

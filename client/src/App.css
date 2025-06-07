@@ -1,15 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@theme {
-  --color-header: rgb(87, 93, 144);
-  --color-background: rgb(221, 213, 208);
-  --color-font: rgb(89, 95, 114);
-  --color-button: rgb(215, 38, 56);
-  --color-accent: rgb(162, 162, 190); 
-}
-
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 /* Document
    ========================================================================== */
@@ -418,7 +406,6 @@ button {
 }
 
 a {
-  color: #1b89bc;
   text-decoration: none;
 }
 
@@ -454,7 +441,7 @@ a:hover {
 
 /* MARGIN/PADDING UTILS */
 /* Margin - all sides */
-.m-0 {
+/* .m-0 {
   margin: 0 !important;
 }
 
@@ -480,10 +467,10 @@ a:hover {
 
 .m-auto {
   margin: auto !important;
-}
+} */
 
 /* Margin-bottom */
-.mb-0 {
+/* .mb-0 {
   margin-bottom: 0 !important;
 }
 
@@ -509,10 +496,10 @@ a:hover {
 
 .mb-auto {
   margin-bottom: auto !important;
-}
+} */
 
 /* Margin-top */
-.mt-0 {
+/* .mt-0 {
   margin-top: 0 !important;
 }
 
@@ -538,10 +525,10 @@ a:hover {
 
 .mt-auto {
   margin-top: auto !important;
-}
+} */
 
 /* Margin-right */
-.mr-0 {
+/* .mr-0 {
   margin-right: 0 !important;
 }
 
@@ -567,10 +554,10 @@ a:hover {
 
 .mr-auto {
   margin-right: auto !important;
-}
+} */
 
 /* Margin-left */
-.ml-0 {
+/* .ml-0 {
   margin-left: 0 !important;
 }
 
@@ -596,10 +583,10 @@ a:hover {
 
 .ml-auto {
   margin-left: auto !important;
-}
+} */
 
 /* Margin - x axis */
-.mx-0 {
+/* .mx-0 {
   margin-right: 0 !important;
   margin-left: 0 !important;
 }
@@ -632,10 +619,10 @@ a:hover {
 .mx-auto {
   margin-right: auto !important;
   margin-left: auto !important;
-}
+} */
 
 /* Margin - y axis */
-.my-0 {
+/* .my-0 {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 }
@@ -668,10 +655,10 @@ a:hover {
 .my-auto {
   margin-top: auto !important;
   margin-bottom: auto !important;
-}
+} */
 
 /* Padding - all sides */
-.p-0 {
+/* .p-0 {
   padding: 0 !important;
 }
 
@@ -693,10 +680,10 @@ a:hover {
 
 .p-5 {
   padding: 1.625rem !important;
-}
+} */
 
 /* padding-bottom */
-.pb-0 {
+/* .pb-0 {
   padding-bottom: 0 !important;
 }
 
@@ -718,10 +705,10 @@ a:hover {
 
 .pb-5 {
   padding-bottom: 1.625rem !important;
-}
+} */
 
 /* padding-top */
-.pt-0 {
+/* .pt-0 {
   padding-top: 0 !important;
 }
 
@@ -743,10 +730,10 @@ a:hover {
 
 .pt-5 {
   padding-top: 1.625rem !important;
-}
+} */
 
 /* padding-right */
-.pr-0 {
+/* .pr-0 {
   padding-right: 0 !important;
 }
 
@@ -768,10 +755,10 @@ a:hover {
 
 .pr-5 {
   padding-right: 1.625rem !important;
-}
+} */
 
 /* padding-left */
-.pl-0 {
+/* .pl-0 {
   padding-left: 0 !important;
 }
 
@@ -793,10 +780,10 @@ a:hover {
 
 .pl-5 {
   padding-left: 1.625rem !important;
-}
+} */
 
 /* padding - x axis */
-.px-0 {
+/* .px-0 {
   padding-right: 0 !important;
   padding-left: 0 !important;
 }
@@ -824,10 +811,10 @@ a:hover {
 .px-5 {
   padding-right: 1.625rem !important;
   padding-left: 1.625rem !important;
-}
+} */
 
 /* Padding - y axis */
-.py-0 {
+/* .py-0 {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
 }
@@ -855,7 +842,7 @@ a:hover {
 .py-5 {
   padding-top: 1.625rem !important;
   padding-bottom: 1.625rem !important;
-}
+} */
 
 .text-uppercase {
   text-transform: uppercase !important;
