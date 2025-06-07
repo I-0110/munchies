@@ -8,6 +8,7 @@ import RecipePage from './pages/MealDB';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Error from './pages/Error';
+import Add from './pages/Add';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,9 @@ const router = createBrowserRouter([
       }, {
         path: '/me',
         element: <User />
+      }, {
+        path: '/add',
+        element: <Add />
       }
     ]
   },

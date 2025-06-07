@@ -7,3 +7,15 @@
   --color-button: rgb(215, 38, 56);
   --color-accent: rgb(162, 162, 190); 
 }
+
+.background-video {
+  height: 100vh;
+  width: 100%;
+  float: left;
+  top: 0;
+  left: 0;
+  padding: none;
+  position: fixed;
+  z-index: -1;
+  rotate: 90;
+}
