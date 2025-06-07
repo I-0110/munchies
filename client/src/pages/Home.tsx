@@ -61,9 +61,9 @@ const Home = () => {
   };
 
   return (
-    <main className='bg-background h-full w-screen h-screen mt-2'>
+    <main className='bg-background h-screen w-full px-5'>
       <div className="flex-row justify-center">
-        <div className="flex-row">
+        <div >
           {searchLoading ? (
             <div>Loading...</div>
           ) : (
@@ -72,9 +72,9 @@ const Home = () => {
 
             {result ? (
               Array.isArray(result) ? (
-              <div>
+              <div className=''>
                 <h3>Recipes:</h3>
-                <div className='meal-list'>{result.map((meal: any) => (
+                <div className='meal-list grid md:grid-cols-2 lg:grid-cols-4 my-3 gap-3 mx-5'>{result.map((meal: any) => (
                   <div key={meal.idMeal}>
                     <MealCard 
                       _id={meal.idMeal} 

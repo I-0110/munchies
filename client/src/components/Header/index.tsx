@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { type MouseEvent} from 'react';
+import { type MouseEvent } from 'react';
 import Auth from '../../utils/auth';
 
 const Header = () => {
@@ -8,17 +8,20 @@ const Header = () => {
     Auth.logout();
   };
   return (
-    <header className="w-screen bg-header flex border-b-10 border-accent shadow-xl shadow-accent">
-      <div className="w-screen container flex-column justify-space-between-lg justify-center align-center text-center">
-        <Link className="text-sky-200 text-light" to="/">
-          <h1 className="m-0 text-background" style={{ fontSize: '3rem' }}>
-            Munchies
-          </h1>
-        </Link>
-        <h2 className="hidden md:block text-background mb-5" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
+    <header className="min-w-full bg-header flex border-b-10 border-accent shadow-[2px_5px_4px_0px] shadow-accent">
+      <div className="min-w-full container flex-column justify-space-between-lg justify-center align-center text-center">
+        <span className='flex justify-center'>
+          <Link className="" to="/">
+          <img className='w-19 h-19' src="/munchies.png" alt="munchies logo" />
+          </Link>
+            <h1 className="m-0 text-background pl-5" style={{ fontSize: '3rem' }}>
+              Munchies
+            </h1>
+        </span>
+        <h2 className="hidden md:block w-full text-background mb-5" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
           Plan your next meal. One meal at the time!
         </h2>
-        <div className='w-full flex justify-end pr-3'>
+        <div className='min-w-full flex justify-end md:pr-3'>
           {Auth.loggedIn() ? (
             <>
               <Link className="btn btn-lg btn-primary m-2" to="/me">
