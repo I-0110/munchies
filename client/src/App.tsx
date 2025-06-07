@@ -1,5 +1,7 @@
 import './styles.css'
 
+import './styles.css'
+
 import {
   ApolloClient,
   InMemoryCache,
