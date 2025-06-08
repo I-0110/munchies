@@ -89,7 +89,7 @@ const Add = () => {
 
     return (
         <main className='flex items-center justify-center h-full w-full mt-20'>
-            <div className="w-[80%] max-w-[500px] flex flex-col-reverse items-center justify-center bg-background shadow-md rounded-[4px]">
+            <div className="w-[80%] max-w-[500px] flex flex-col-reverse items-center justify-center bg-background shadow-md rounded-[4px] relative z-2">
             <div className="flex flex-col items-center justify-center text-sm rounded-md">
             <div className="flex flex-col items-center justify-center flex-wrap rounded-md">
             <h4 className="text-2xl font-bold text-gray-900 my-5 text-center">Add Your Recipe</h4>
