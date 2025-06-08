@@ -17,7 +17,8 @@ const MealCard: React.FC<MealCardProps> = ({ image_url, name, category }) => (
         <div style={{
             display: 'flex',
             alignItems: 'center',
-            border: '1px solid #eee',
+            border: '5px solid #A2A2BE',
+            boxShadow: '5px 8px 12px rgba(162,162,190,1)',
             borderRadius: 8,
             padding: 12,
             background: '#fff',
