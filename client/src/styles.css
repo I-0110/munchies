@@ -27,3 +27,30 @@
   z-index: 0;
   rotate: 90;
 }
+
+.save-message {
+  text-align: center;
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: 1px;
+  border-radius: 0 0 5px 0;
+  background-color: #D72638;
+  color: whitesmoke;
+}
+
+.save-message-slider {
+  width: 200px;
+  height: 5px;
+  position: relative;
+  z-index: 11;
+  background-color: #A2A2BE;
+  animation: slider 5s linear forwards;
+}
+
+@keyframes slider {
+  from {left: 0}
+  to {left: -110%}
+}
