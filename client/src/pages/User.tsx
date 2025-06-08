@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
 
 import { QUERY_ME } from '../utils/queries';
@@ -56,6 +56,10 @@ const User = () => {
             }}
           >
             Delete Account
+          </button>
+
+          <button className="bg-button text-background px-4 py-2 rounded-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark">
+            <Link to="/GroceryList">View Grocery List</Link>
           </button>
         </section>
       </section>
