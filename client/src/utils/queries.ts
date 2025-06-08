@@ -23,6 +23,7 @@ query Me {
   me {
     name
     recipes {
+      _id
       category
       day
       image_url

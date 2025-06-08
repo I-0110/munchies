@@ -2,6 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_RECIPE } from '../utils/mutations';
 import chopping from '/chopping.mp4'; 
+import { QUERY_ME } from '../utils/queries';
 
 interface IIngredient {
     ingredient: string,
@@ -21,7 +22,9 @@ const Add = () => {
     const [day, setDay] = useState<string>('');
     const [mealId, setMealID] = useState<string>('')
 
-    const [addRecipe, {error}] = useMutation(ADD_RECIPE);
+    const [addRecipe, {error}] = useMutation(ADD_RECIPE, {
+        refetchQueries: [QUERY_ME]
+    });
 
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -58,7 +61,10 @@ const Add = () => {
 
     const handleRecipeSubmit = async (event: FormEvent) => {
         event.preventDefault()
-        const id = `a${idNum}`
+        let alpha = name.slice(0, 3)
+        let num = 0
+        for(let i = 0; i < name.length; i++){ num += Math.floor(Math.random() * 10000)}
+        const id = `${alpha}${num}`
         setMealID(id)
         try {
             console.log(day, mealId,name,category,instructions,image_url,video_url,ingredients)

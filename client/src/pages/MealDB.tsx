@@ -149,7 +149,7 @@ const RecipePage = () => {
     // filters what we want to print
     if (toPrint) {
         return (
-            <div style={{ padding: 20 }}>
+            <div className='bg-background' style={{ padding: 20 }}>
                 <h1>{meal.strMeal}</h1>
                 <h4><strong>Category:</strong> {meal.strCategory}</h4>
                 <img
@@ -172,8 +172,8 @@ const RecipePage = () => {
     } else { 
         // Regular UI with buttons and videos
     return (
-        <div style={{ padding: 20 }}>
-            <h1>{meal.strMeal}</h1> 
+        <div className='bg-background-semi-transparent' style={{ padding: 20 }}>
+            <h1 className=''>{meal.strMeal}</h1> 
             <h4><strong>Category:</strong> {meal.strCategory}</h4>
             <button onClick={handlePrint} style={{ margin: '10px 0' }}>
             🖨️ Print Recipe

@@ -52,9 +52,9 @@ pre {
 /**
  * Remove the gray background on active links in IE 10.
  */
-a {
+/* a {
   background-color: transparent;
-}
+} */
 
 /**
  * 1. Remove the bottom border in Chrome 57-
@@ -405,14 +405,14 @@ button {
   margin: 0;
 }
 
-a {
+/* a {
   text-decoration: none;
 }
 
 a:hover {
   color: #065b83;
   text-decoration: underline;
-}
+} */
 
 /* HEIGHT / WIDTH UTILS */
 .w-100 {
@@ -934,7 +934,7 @@ a:hover {
 }
 
 /* DISPLAY */
-.display-none {
+/* .display-none {
   display: none !important;
 }
 
@@ -1090,10 +1090,10 @@ a:hover {
 }
 
 .card.card-rounded .card-header {
-  border-radius: calc(0.18rem - 1px) calc(0.18rem - 1px) 0 0;
-}
+  border-radius: calc(0.18rem - 1px) calc(0.18rem - 1px) 0 0; */
+/* } */
 
-form {
+/* form {
   width: 100%;
 }
 
@@ -1147,7 +1147,7 @@ form [type='radio'] {
 label form [type='checkbox'],
 label form [type='radio'] {
   display: inline-block;
-}
+} */
 
 .container {
   width: 85%;
@@ -1161,7 +1161,7 @@ label form [type='radio'] {
 }
 
 /* FLEX CONTENT */
-.flex-row {
+/* .flex-row {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -1239,9 +1239,9 @@ label form [type='radio'] {
   flex-direction: row;
   margin-left: -15px;
   margin-right: -15px;
-}
+} */
 
-[class*='col-'] {
+/* [class*='col-'] {
   position: relative;
   width: 100%;
   padding-right: 15px;
@@ -1311,10 +1311,10 @@ label form [type='radio'] {
 .col-12 {
   flex: 0 0 100%;
   max-width: 100%;
-}
+} */
 
 /* col-sm */
-@media screen and (min-width: 640px) {
+/* @media screen and (min-width: 640px) {
   .col-sm-auto {
     flex-grow: 1;
     flex-basis: 0;
@@ -1405,11 +1405,11 @@ label form [type='radio'] {
   }
   .align-content-center-sm {
     align-content: center;
-  }
-}
+  } */
+/* } */
 
 /* col-md */
-@media screen and (min-width: 768px) {
+/* @media screen and (min-width: 768px) {
   .col-md-auto {
     flex-grow: 1;
     flex-basis: 0;
@@ -1501,10 +1501,10 @@ label form [type='radio'] {
   .align-content-center-md {
     align-content: center;
   }
-}
+} */
 
 /* col-lg */
-@media screen and (min-width: 992px) {
+/* @media screen and (min-width: 992px) {
   .col-md-auto {
     flex-grow: 1;
     flex-basis: 0;
@@ -1596,10 +1596,10 @@ label form [type='radio'] {
   .align-content-center-lg {
     align-content: center;
   }
-}
+} */
 
 /* col-xl */
-@media screen and (min-width: 1200px) {
+/* @media screen and (min-width: 1200px) {
   .col-xl-1 {
     flex: 0 0 8.33333%;
     max-width: 8.33333%;
@@ -1687,4 +1687,4 @@ label form [type='radio'] {
   .align-content-center-xl {
     align-content: center;
   }
-}
+} */

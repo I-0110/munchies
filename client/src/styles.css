@@ -6,12 +6,14 @@
 @theme {
   --color-header: rgb(87, 93, 144);
   --color-background: rgb(221, 213, 208);
+  --color-background-transparent: rgba(221, 213, 208, .35);
+  --color-background-semi-transparent: rgba(221, 216, 208, .8);
   --color-font: rgb(89, 95, 114);
   --color-button: rgb(215, 38, 56);
-  --color-button-dark: rgba(215, 38, 56, .90);
+  --color-button-dark: rgba(185, 8, 26, .90);
   --color-button-focus: rgb(512, 38, 58);
   --color-accent: rgb(162, 162, 190); 
-  --color-accent: rgb(162, 162, 190); 
+  --color-accent-dark: rgb(122, 122, 140); 
 }
 
 .background-video {

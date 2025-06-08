@@ -48,7 +48,7 @@ const Signup = () => {
   };
 
   return (
-    <main className="flex items-center justify-center h-full">
+    <main className="flex items-center justify-center h-screen">
       <div className="min-w-fit flex-col-reverse border bg-(color:--color-background) px-6 py-14 shadow-md rounded-[4px] relative z-2">
         <form onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
           <div>

@@ -5,19 +5,24 @@ interface SearchInputProps {
 }
 
 export default function SearchInput({ value, onChange, handleSearch }: SearchInputProps) {
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault
+        handleSearch()
+    }
+
     return (
-        <div className="w-full flex-colum items-center">
+        <form className="md:w-1/3 lg:w-1/2 m-auto" onSubmit={onSubmit} >
             <input type="text"
-                className="search w-1/2 border"
-                placeholder="Search Recipes"
+                name="search"
+                className="search bg-background w-full border-3 border-accent-dark text-center"
+                placeholder="Enter Ingrident/Recipes"
                 value={value}
                 onChange={(e) => onChange(e.target.value)} />
             <br />
             <button
-                className="mt-1 w-1/2 border p-3 bg-gradient-to-r from-[#D72638] bg-[#A2A2BE] text-white rounded-[4px]"
+                className="mt-1 w-full border p-3 bg-gradient-to-r from-[#D72638] bg-[#A2A2BE] text-white rounded-[4px]"
                 style={{ cursor: 'pointer' }}
-                type="submit"
-                onClick={handleSearch}>Search Recipe</button>
-        </div>
+                type="submit">Search Recipe</button>
+        </form>
     );
 }
