@@ -4,6 +4,7 @@ const typeDefs = `
     name: String
     email: String
     password: String
+    cookbook: [Recipe]
     recipes: [Recipe]
   }
 

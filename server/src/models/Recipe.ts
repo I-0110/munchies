@@ -25,7 +25,7 @@ const recipeSchema = new Schema<IRecipe>(
     mealId: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
       index: true,
     },
     name: {
