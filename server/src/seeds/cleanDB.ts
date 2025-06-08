@@ -2,9 +2,9 @@ import { Ingredient, Recipe, User } from '../models/index.js';
 
 const cleanDB = async (): Promise<void> => {
   try {
-    await User.deleteMany({})
-    await Recipe.deleteMany({})
-    await Ingredient.deleteMany({})
+    await User.collection.drop()
+    await Recipe.collection.drop()
+    await Ingredient.collection.drop()
 
     // console.log("No Dbs to drop!")
     console.log("Dbs dropped!")
