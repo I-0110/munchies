@@ -9,6 +9,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Error from './pages/Error';
 import Add from './pages/Add';
+import GroceryList from './pages/GroceryList.js';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       }, {
         path: '/add',
         element: <Add />
+      }
+      , {
+        path: '/grocery-list',
+        element: <GroceryList />
       }
     ]
   },
