@@ -58,12 +58,12 @@ const Home = () => {
 
   return (
     <main className='bg-background h-screen w-full px-5'>
-      <div className="flex-row justify-center">
+      <div>
         <div >
           {searchLoading ? (
             <div>Loading...</div>
           ) : (
-          <div>
+          <div className='flex'>
             <SearchInput value={query} onChange={setQuery} handleSearch={handleSearch}  />
 
             {result ? (
