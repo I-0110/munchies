@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_RECIPE } from '../utils/mutations';
 import chopping from '/chopping.mp4'; 
@@ -21,11 +21,18 @@ const Add = () => {
     const [ingredients, setIngredients] = useState<IIngredient[]>([]);
     const [day, setDay] = useState<string>('');
     const [mealId, setMealID] = useState<string>('')
+    const [click, setClick] = useState<Boolean>(false)
 
     const [addRecipe, {error}] = useMutation(ADD_RECIPE, {
         refetchQueries: [QUERY_ME]
     });
 
+    useEffect(() => {
+        const timer = setTimeout(() => {
+          setClick(false)
+        }, 5000);
+        return () => clearTimeout(timer);
+      }, [click]);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { target } = event
@@ -59,8 +66,14 @@ const Add = () => {
         console.log(ingredients)
     };
 
+    const onRemoveClick = async (key: number) => {
+        const updatedIngredients = ingredients.filter((_, index) => index !== key);
+        setIngredients(updatedIngredients);
+    }
+
     const handleRecipeSubmit = async (event: FormEvent) => {
         event.preventDefault()
+        setClick(true)
         let alpha = name.slice(0, 3)
         let num = 0
         for(let i = 0; i < name.length; i++){ num += Math.floor(Math.random() * 10000)}
@@ -100,47 +113,68 @@ const Add = () => {
             <div className="flex flex-col items-center justify-center flex-wrap rounded-md">
             <h4 className="text-2xl font-bold text-gray-900 my-5 text-center">Add Your Recipe</h4>
             <div className="flex flex-col text-sm rounded-md">
+                <label className="flex items-center">
+                    <span>Recipe Name</span>
+                    <span className="text-red-500 ml-1">*</span>
+                </label>
                 <input
                 placeholder="Recipe Name"
                 name="name"
-                className="mt-3 flex rounded-[4px] border p-3"
+                className="mt-1 flex rounded-[4px] border p-3"
                 type="text"
                 value={name}
                 onChange={handleChange}
+                required
                 />
+                <label className="flex items-center">
+                    <span>Recipe Category</span>
+                </label>
                 <input
                 placeholder="Recipe Category"
                 name="category"
-                className="mt-3 flex rounded-[4px] border p-3"
+                className="mt-1 flex rounded-[4px] border p-3"
                 type="text"
                 value={category}
                 onChange={handleChange}
                 />
+                <label className="flex items-center">
+                    <span>Recipe Instructions</span>
+                </label>
                 <textarea
                 placeholder="Recipe Instructions"
                 name="instructions"
-                className="mt-3 flex rounded-[4px] border p-3"
+                className="mt-1 flex rounded-[4px] border p-3"
                 value={instructions}
                 onChange={handleChange}
                 />
+                <label className="flex items-center">
+                    <span>Image URL</span>
+                </label>
                 <input
                 placeholder="Add an image url here..."
                 name="image_url"
-                className="mt-3 flex rounded-[4px] border p-3"
+                className="mt-1 flex rounded-[4px] border p-3"
                 type="text"
                 value={image_url}
                 onChange={handleChange}
                 />
+                <label className="flex items-center">
+                    <span>Video URL</span>
+                </label>
                 <input
                 placeholder="Add a video url here..."
                 name="video_url"
-                className="mt-3 flex rounded-[4px] border p-3"
+                className="mt-1 flex rounded-[4px] border p-3"
                 type="text"
                 value={video_url}
                 onChange={handleChange}
                 />
+                <label className="flex items-center">
+                    <span>Day of the Week</span>
+                    <span className="text-red-500 ml-1">*</span>
+                </label>
                 <select name="day" multiple={false} 
-                onChange={handleChange} className="m-2 flex rounded-[4px] p-3">
+                onChange={handleChange} className="m-2 flex rounded-[4px] p-3" required>
                 <option value="" >Choose a Day of the Week</option>
                 <option value="sunday">Sunday</option>
                 <option value="monday">Monday</option>
@@ -167,7 +201,7 @@ const Add = () => {
                 onChange={handleChange}
                 />
                 <textarea
-                placeholder="Ingredient Measure"
+                placeholder="Ingredient Measurement"
                 name="measure"
                 className="m-2 flex rounded-[4px] border p-3"
                 style={{ width: '250px'}}
@@ -193,9 +227,10 @@ const Add = () => {
                 <p className='mt-1'>Ingredients:</p>
                 <ol>
                 {<b>{ingredients.map((meal: any, index: number) => (
-                <li className='mt-1' key={index}>
-                <p>Ingredient: {meal.ingredient}</p>
-                <p>Measure: {meal.measure}</p>
+                <li className='mt-2' key={index}>
+                <h6>Ingredient: {meal.ingredient}</h6>
+                <h6>Measurement: {meal.measure}</h6>
+                <button onClick={() => onRemoveClick(index)} className='bg-gray-200 text-gray-800 border border-gray-400 px-4 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50'>Remove</button>
                 </li>
                 ))}</b>}
                 </ol>
@@ -209,11 +244,12 @@ const Add = () => {
             onClick={handleRecipeSubmit}
             >Add This Recipe
             </button>
-            {error ? 
+            {click ? error ?
                 <div className="mt-1 mb-5 border p-3 bg-red-500 text-white rounded-[4px]">
                 <p>Error Adding Recipe: {error.message}</p>
                 </div> 
-                : <p></p>}
+                : <p>Recipe Saved!</p>
+            : null}
             </div>
             </div>
             </div>

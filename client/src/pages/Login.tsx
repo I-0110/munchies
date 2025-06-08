@@ -78,9 +78,9 @@ const Login = () => {
                 >
                   Submit
                 </button>
-                <Link className="text-center mt-5 mb-5 w-full border p-3 bg-gradient-to-r from-[#A2A2BE] bg-[#D72638] text-white rounded-[4px]" to="/signup" style={{ cursor: 'pointer' }}>
+                {/* <Link className="text-center mt-5 mb-5 w-full border p-3 bg-gradient-to-r from-[#A2A2BE] bg-[#D72638] text-white rounded-[4px]" to="/signup" style={{ cursor: 'pointer' }}>
                 Register
-              </Link>
+              </Link> */}
               </div>
             )}
             {error && (
