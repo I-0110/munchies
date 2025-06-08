@@ -7,6 +7,7 @@ const cleanDB = async (): Promise<void> => {
     // await Ingredient.collection.drop()
 
     console.log("No Dbs to drop!")
+    // console.log("Dbs dropped!")
 
   } catch (err) {
     console.error('Error cleaning collections:', err);

@@ -93,7 +93,7 @@ const resolvers = {
           console.log(recipe)
           await User.findOneAndUpdate(
             { _id: context.user._id },
-            { $addToSet: { recipes: recipe } },
+            { $push: { recipes: recipe } },
             {
               new: true,
               runValidators: true,
