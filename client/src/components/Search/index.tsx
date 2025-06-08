@@ -15,7 +15,7 @@ export default function SearchInput({ value, onChange, handleSearch }: SearchInp
             <input type="text"
                 name="search"
                 className="search bg-background w-full border-3 border-accent-dark text-center"
-                placeholder="Enter Ingrident/Recipes"
+                placeholder="Enter Ingredient/Recipes"
                 value={value}
                 onChange={(e) => onChange(e.target.value)} />
             <br />
