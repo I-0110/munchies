@@ -13,7 +13,7 @@ const Footer: React.FC = () => {
   }
   
   return (
-    <footer className="bg-header w-full mt-auto text-background p-4 border-t-10 border-accent">
+    <footer className="bg-header w-full mt-auto text-background p-4 border-t-10 border-accent relative z-3">
       <div className="container text-center sm:mb-5 ">
         {location.pathname !== '/' && (
           <button

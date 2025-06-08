@@ -1,15 +1,15 @@
-import { Link, useLocation } from 'react-router-dom';
-import { type MouseEvent} from 'react';
+import { Link } from 'react-router-dom';
+import { type MouseEvent } from 'react';
 import Auth from '../../utils/auth';
 
 const Header = () => {
-  const path = useLocation().pathname
+  // const path = useLocation().pathname
   const logout = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     Auth.logout();
   };
   return (
-    <header className="min-w-full bg-header flex border-b-10 border-accent shadow-[2px_5px_4px_0px] shadow-accent">
+    <header className="min-w-full bg-header flex border-b-10 border-accent shadow-[2px_5px_4px_0px] shadow-accent relative z-3">
       <div className="min-w-full container flex-column justify-space-between-lg justify-center align-center text-center">
         <span className='flex justify-center'>
           <Link className="" to="/">
@@ -37,12 +37,12 @@ const Header = () => {
             </>
           ) : (
             <>
-              {path === '/login' ? <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/">
-                Home
-              </Link> : <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/login">
+              <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/login">
                 Login
-              </Link>}
-
+              </Link>
+              <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/signup">
+                Register
+              </Link>
             </>
           )}
         </div>

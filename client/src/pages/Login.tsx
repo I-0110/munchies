@@ -43,8 +43,8 @@ const Login = () => {
   };
 
   return (
-    <main className="flex items-center justify-center h-full w-full">
-      <div className="min-w-fit flex-col-reverse border bg-(color:--color-background) px-6 py-14 shadow-md rounded-[4px]">
+    <main className="flex items-center justify-center h-screen">
+      <div className="min-w-fit flex-col-reverse border bg-(color:--color-background) px-6 py-14 shadow-md rounded-[4px] relative z-10">
         <form onSubmit={handleFormSubmit} className="flex flex-col text-sm rounded-md">
           <h4 className="text-2xl font-bold text-gray-900 my-5 text-center">Login</h4>
           <div>
