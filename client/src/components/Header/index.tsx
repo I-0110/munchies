@@ -20,7 +20,7 @@ const Header = () => {
             </h1>
         </span>
         <h2 className="hidden md:block w-full text-background mb-5" style={{ fontSize: '1.75rem', fontWeight: '700' }}>
-          Plan your next meal. One meal at the time!
+          Plan your next meal. One meal at a time!
         </h2>
         <div className='min-w-full flex justify-end md:pr-3'>
           {Auth.loggedIn() ? (
