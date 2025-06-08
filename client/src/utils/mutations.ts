@@ -51,11 +51,10 @@ export const REMOVE_INGREDIENT = gql`
 `;
 
 export const REMOVE_RECIPES = gql`
-  mutation removeRecipes($recipes: String!) {
-    removeRecipes(recipes: $recipes) {
+  mutation removeRecipes($day: String!, $recipeId: String!) {
+    removeRecipes(day: $day, recipeId: $recipeId) {
       _id
-      username
-      recipes
+      name
     }
   }
 `;

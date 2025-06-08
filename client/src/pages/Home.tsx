@@ -7,6 +7,7 @@ import { Recipe } from '../utils/models/Recipe';
 import { retreiveTMDBRecipies } from '../utils/API/mealsAPI';
 import Auth from '../utils/auth';
 import { ADD_RECIPE } from '../utils/mutations';
+import { QUERY_ME } from '../utils/queries';
 
 const Home = () => {
 
@@ -14,7 +15,9 @@ const Home = () => {
   const [result, setResult] = useState<Recipe[] | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
   
-  const [addRecipe] = useMutation(ADD_RECIPE);
+const [addRecipe] = useMutation(ADD_RECIPE, {
+  refetchQueries: [{ query: QUERY_ME }],
+});
 
   const handleSearch = async () => {
     setSearchLoading(true);
@@ -49,6 +52,7 @@ const Home = () => {
       if (!response) {
         throw new Error("Recipe did not save!");
       }
+      console.log(response)
 
       console.log("Recipe successfully saved!");
     } catch (err) {
@@ -57,20 +61,20 @@ const Home = () => {
   };
 
   return (
-    <main className='bg-background h-screen w-full px-5'>
-      <div className="flex-row justify-center">
-        <div >
+    <main className='h-screen w-full px-5 py-5'>
+      <div>
+        <div className=''>
           {searchLoading ? (
             <div>Loading...</div>
           ) : (
-          <div>
+          <div className='flex-column'>
             <SearchInput value={query} onChange={setQuery} handleSearch={handleSearch}  />
 
             {result ? (
               Array.isArray(result) ? (
-              <div className=''>
-                <h3>Recipes:</h3>
-                <div className='meal-list grid md:grid-cols-2 lg:grid-cols-4 my-3 gap-3 mx-5'>{result.map((meal: any) => (
+              <div>
+                <h3 className='bg-background-semi-transparent test-font w-max border border-accent'>Recipes:</h3>
+                <div className='meal-list grid md:grid-cols-2 lg:grid-cols-3 my-3 gap-3 mx-5'>{result.map((meal: any) => (
                   <div key={meal.idMeal}>
                     <MealCard 
                       _id={meal.idMeal} 
@@ -82,6 +86,7 @@ const Home = () => {
                       ingredients={[]}
                     />
                     { Auth.loggedIn() ? <select 
+                      className='bg-background-semi-transparent'
                       name="choice" 
                       multiple={false} 
                       onChange={(e) => handleSave(

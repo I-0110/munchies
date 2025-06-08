@@ -5,7 +5,7 @@ import { QUERY_ME } from '../utils/queries';
 
 import Auth from '../utils/auth';
 
-import { DELETE_USER } from '../utils/mutations';
+import { DELETE_USER } from '../utils/mutations'
 
 import Week from '../components/Week';
 
@@ -13,6 +13,7 @@ const User = () => {
   const userData = Auth.getUser();
 
   const [deleteUser] = useMutation(DELETE_USER);
+
 
   // If there is no `profileId` in the URL as a parameter, execute the `QUERY_ME` query instead for the logged in user's information
   const { loading, data } = useQuery(
@@ -35,27 +36,29 @@ const User = () => {
 
   return (
     <div>
-      <section className="flex-row justify-center mb-4">
-        <h1>Welcome back, {user.name}</h1>
-        <button
-          className="btn btn-lg btn-danger m-2"
-          onClick={() => {
-            Auth.logout()
-          }}
-        >
-          Logout
-        </button>
+      <section className="user-ui w-1/2 mx-auto mt-5 bg-background-semi-transparent border border-accent" >
+        <h1 className='text-font text-background text-center'>Welcome back, {user.name}</h1>
+        <section className='button-box w-max mx-auto'>
+          <button
+            className="bg-button text-background px-4 py-2 rounded-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark"
+            onClick={() => {
+              Auth.logout()
+            }}
+          >
+            Logout
+          </button>
 
-        <button className="btn btn-lg btn-danger m-2"
-          onClick={async () => {
-            await deleteUser({ variables: { userId: userData.data._id } });
-            Auth.logout();
-          }}
-        >
-          Delete Account
-        </button>
+          <button className="bg-button text-background px-4 py-2 rounded-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark"
+            onClick={async () => {
+              await deleteUser({ variables: { userId: userData.data._id } });
+              Auth.logout();
+            }}
+          >
+            Delete Account
+          </button>
+        </section>
       </section>
-        <Week user={user} />
+      <Week user={user} />
     </div>
   );
 }

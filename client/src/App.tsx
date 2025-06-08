@@ -38,9 +38,9 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="flex-column justify-flex-start h-full w-full bg-background relative z-0">
+      <div className="h-full w-full bg-[url(../frying-pan.jpg)] relative z-0">
         <Header />
-        <div className="flex flex-col items-center justify-center min-h-max h-full w-full mx-0 my-5 overflow-auto">
+        <div className="min-h-max h-full w-full mx-0 overflow-auto">
           <Outlet />
         </div>
         <Footer />

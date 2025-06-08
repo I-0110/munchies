@@ -25,13 +25,13 @@ const Header = () => {
         <div className='min-w-full flex justify-end md:pr-3'>
           {Auth.loggedIn() ? (
             <>
-              <Link className="btn btn-lg btn-primary m-2" to="/me">
+              <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/me">
                 View My Recipes
               </Link>
-              <button className="btn btn-lg btn-light m-2" onClick={logout}>
+              <button className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" onClick={logout}>
                 Logout
               </button>
-              <Link className="btn btn-lg btn-secondary m-2" to="/add">
+              <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/add">
                 Add My Recipe
               </Link>
             </>
