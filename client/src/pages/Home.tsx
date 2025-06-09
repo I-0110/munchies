@@ -8,6 +8,7 @@ import { retreiveTMDBRecipies } from '../utils/API/mealsAPI';
 import Auth from '../utils/auth';
 import { ADD_RECIPE } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
+import munchies from '../../public/munchies.png';
 
 const Home = () => {
 
@@ -90,7 +91,7 @@ const Home = () => {
                     </h5>
                   </div>
                   <p className="block text-slate-600 leading-normal font-light mb-4 max-w-lg">
-                    Munchies is a meal planning application that lets you search for ingredients and recipes and allows you to plan your meals for the week. 
+                    Munchies is a meal planning application that lets you search for ingredients and recipes and plan your meals for the week. 
                   </p>
                 </div>
               </div>
