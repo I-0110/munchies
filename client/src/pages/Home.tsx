@@ -17,7 +17,7 @@ const Home = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const [status, setStatus] = useState<Boolean>(false)
   const [click, setClick] = useState<Boolean>(false)
-  const [addRecipe, {error}] = useMutation(ADD_RECIPE, {
+  const [addRecipe, { error }] = useMutation(ADD_RECIPE, {
     refetchQueries: [{ query: QUERY_ME }],
   });
 
@@ -27,7 +27,7 @@ const Home = () => {
       setClick(false)
     }, 5000);
     return () => clearTimeout(timer);
-  }, [click]);
+  }, [status]);
 
   const handleSearch = async () => {
     setSearchLoading(true);
@@ -63,7 +63,7 @@ const Home = () => {
       if (!response) {
         throw new Error("Recipe did not save!");
       }
-      
+
       console.log("Recipe successfully saved!");
     } catch (err) {
       console.error("Recipe failed to save...", err);
@@ -77,7 +77,7 @@ const Home = () => {
           {searchLoading ? (
             <div className='bg-background-semi-transparent border-3 border-accent shadow-lg shadow-accent w-max m-auto p-3'>Loading...</div>
           ) : (
-            <div className='flex-column'>
+            <div className='flex flex-column justify-center align-center'>
               <SearchInput value={query} onChange={setQuery} handleSearch={handleSearch} />
 
               {result ? (
@@ -131,7 +131,7 @@ const Home = () => {
             </div>
           )}
           {/* Description of the website */}
-          <div className="md:w-1/3 lg:w-1/2 m-auto my-4 bg-background-semi-transparent shadow-sm border border-slate-200 rounded-lg p-2">
+          {!Auth.loggedIn() ? <div className="md:w-1/3 lg:w-1/2 m-auto my-4 bg-background-semi-transparent shadow-sm border border-slate-200 rounded-lg p-2">
             <div className="p-3 text-center">
               <div className="flex justify-center mb-4">
                 <img src={munchies} className="w-10 h-10" />
@@ -142,10 +142,31 @@ const Home = () => {
                 </h5>
               </div>
               <p className="block text-slate-600 leading-normal font-light mb-4 text-center">
-                Munchies is a meal planning application that lets you search for ingredients and recipes and plan your meals for the week.
+                Munchies is a meal planning application that lets you search for ingredients and recipes and plan your meals for the week!
+              </p>
+              <div className="flex justify-center mb-2">
+                <h5 className="text-slate-800 text-2xl font-semibold text-center">
+                  How do I use it?
+                </h5>
+              </div>
+              <p className="block text-slate-600 leading-normal font-light mb-4 text-center">
+                To use Munchies, you need to have an account. Login or register by clicking <span><Link to='/login' className="text-slate-900">here</Link></span> or by clicking on the "Login" button above. All you need to create an account is your name, a valid email, and a password. Once you have an account, you can login at any time to search and add recipes to your weekly plan, adjust your plan, add your own recipes, view and print recipes, watch the video tutorial for your recipes, or collect the shopping list of items you need for the week! Feel free to explore the various features of the application and happy planning!
               </p>
             </div>
           </div>
+            :
+            <div className="md:w-1/3 lg:w-1/2 m-auto my-4 bg-background-semi-transparent shadow-sm border border-slate-200 rounded-lg p-2">
+              <div className="p-3 text-center">
+                <div className="flex justify-center mb-4">
+                  <img src={munchies} className="w-10 h-10" />
+                </div>
+                <div className="flex justify-center mb-2">
+                  <h5 className="text-slate-800 text-2xl font-semibold text-center">
+                    Thanks for supporting Munchies!
+                  </h5>
+                </div>
+              </div>
+            </div>}
         </div>
       </div>
       {click && (
