@@ -9,7 +9,7 @@ import Auth from '../utils/auth';
 import { ADD_RECIPE } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
 
-import munchies from '../../public/munchies.png';
+import munchies from '/munchies.png';
 
 const Home = () => {
 

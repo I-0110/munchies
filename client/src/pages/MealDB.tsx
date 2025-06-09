@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-// import { FormEvent } from 'react';
-// import Auth from '../utils/auth';
 import { useParams } from "react-router-dom";
+// import { FormEvent } from 'react';
+import { useMutation } from '@apollo/client';
+import { ADD_RECIPE } from '../utils/mutations';
+import { QUERY_ME } from '../utils/queries';
+import Auth from '../utils/auth';
 
 type Meal = {
     idMeal: string;
@@ -104,6 +107,10 @@ const RecipePage = () => {
     const [loading, setLoading] = useState(true);
     const [toPrint, setToPrint] = useState(false);
 
+    const [addRecipe] = useMutation(ADD_RECIPE, {
+        refetchQueries: [{ query: QUERY_ME }],
+    });
+
     useEffect(() => {
         const fetchMeal = async () => {
             try {
@@ -126,6 +133,34 @@ const RecipePage = () => {
 
         fetchMeal();
     }, [name]);
+
+    // Trigger to save recipe by day(s)
+    const handleSave = async (day: string) => {
+        if (!meal) return;
+
+        try {
+            const response = await addRecipe({
+                variables: {
+                   input: {
+                        day,
+                        mealId: meal.idMeal,
+                        name: meal.strMeal,
+                        category: meal.strCategory,
+                        instructions: meal.strInstructions,
+                        image_url: meal.strMealThumb,
+                        video_url: meal.strYoutube,
+                        ingredients: meal.ingredients || [],
+                    },
+                },
+            });
+
+            if (!response) throw new Error("Recipe did not save!");
+            alert(`Saved recipe for ${day.charAt(0).toUpperCase() + day.slice(1)}!`);
+            } catch (err) {
+            console.error("Recipe failed to save...", err);
+            alert("Error saving recipe. Check console.");
+            }
+        }; 
 
     // Trigger print mode
     const handlePrint = () => {
@@ -178,6 +213,27 @@ const RecipePage = () => {
             🖨️ Print Recipe
             </button>
             
+            {Auth.loggedIn() ? (
+                <select
+                    className='bg-background-semi-transparent'
+                    name="choice"
+                    onChange={(e) => handleSave(e.target.value)}
+                >
+                    <option value="">Choose a Day to Save</option>
+                    <option value="sunday">Sunday</option>
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                </select>
+            ) : (
+                <p>
+                    <a href="/login" className="underline text-blue-500">Log in to save this recipe.</a>
+                </p>
+            )}
+
             <img
                 src={meal.strMealThumb}
                 alt={meal.strMeal}
