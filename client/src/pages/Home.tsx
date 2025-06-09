@@ -17,7 +17,7 @@ const Home = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const [status, setStatus] = useState<Boolean>(false)
   const [click, setClick] = useState<Boolean>(false)
-  const [addRecipe] = useMutation(ADD_RECIPE, {
+  const [addRecipe, {error}] = useMutation(ADD_RECIPE, {
     refetchQueries: [{ query: QUERY_ME }],
   });
 
@@ -59,11 +59,11 @@ const Home = () => {
           }
         },
       });
-
+      setStatus(true)
       if (!response) {
         throw new Error("Recipe did not save!");
       }
-      setStatus(true)
+      
       console.log("Recipe successfully saved!");
     } catch (err) {
       console.error("Recipe failed to save...", err);
@@ -149,20 +149,27 @@ const Home = () => {
           )}
         </div>
       </div>
-      {click ? 
-      <div className='save-message'>
-        {status ? 
-        <div>
-          <p>Recipe Saved!</p> 
-          <div className='save-message-slider'></div>
+      {click && (
+        <div className='save-message'>
+          {status ? (
+            !error ? (
+              <div>
+                <p>Recipe Saved!</p>
+                <div className='save-message-slider'></div>
+              </div>
+            ) : (
+              <div>
+                <p>Recipe failed to save.</p>
+                <div className='save-message-slider'></div>
+              </div>
+            )
+          ) : (
+            <div>
+              <p>Saving...</p>
+            </div>
+          )}
         </div>
-        : 
-        <div>
-          <p>Recipe failed to save.</p>
-          <div className='save-message-slider'></div>
-        </div>
-        }
-      </div> : <div></div>}
+      )}
       <div className='padding py-6'></div>
     </main>
   );
