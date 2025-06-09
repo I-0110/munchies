@@ -8,6 +8,7 @@ import { retreiveTMDBRecipies } from '../utils/API/mealsAPI';
 import Auth from '../utils/auth';
 import { ADD_RECIPE } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
+import munchies from '../../public/munchies.png';
 
 const Home = () => {
 
@@ -78,6 +79,22 @@ const Home = () => {
           ) : (
             <div className='flex-column'>
               <SearchInput value={query} onChange={setQuery} handleSearch={handleSearch}/>
+              // Description of the website
+              <div className="md:w-1/3 lg:w-1/2 m-auto my-4 bg-background-semi-transparent shadow-sm border border-slate-200 rounded-lg p-2">
+                <div className="p-3 text-center">
+                  <div className="flex justify-center mb-4">
+                    <img src={munchies} className="w-10 h-10" />
+                  </div>
+                  <div className="flex justify-center mb-2">
+                    <h5 className="text-slate-800 text-2xl font-semibold">
+                      What is Munchies?
+                    </h5>
+                  </div>
+                  <p className="block text-slate-600 leading-normal font-light mb-4 max-w-lg">
+                    Munchies is a meal planning application that lets you search for ingredients and recipes and plan your meals for the week. 
+                  </p>
+                </div>
+              </div>
 
               {result ? (
                 Array.isArray(result) && result.length > 0 ? (
