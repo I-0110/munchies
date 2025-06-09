@@ -22,12 +22,12 @@ const Home = () => {
   });
 
   useEffect(() => {
-      const timer = setTimeout(() => {
-        setStatus(false)
-        setClick(false)
-      }, 5000);
-      return () => clearTimeout(timer);
-    }, [click]);
+    const timer = setTimeout(() => {
+      setStatus(false)
+      setClick(false)
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [click]);
 
   const handleSearch = async () => {
     setSearchLoading(true);
@@ -78,7 +78,7 @@ const Home = () => {
             <div className='bg-background-semi-transparent border-3 border-accent shadow-lg shadow-accent w-max m-auto p-3'>Loading...</div>
           ) : (
             <div className='flex-column'>
-              <SearchInput value={query} onChange={setQuery} handleSearch={handleSearch}/>
+              <SearchInput value={query} onChange={setQuery} handleSearch={handleSearch} />
               // Description of the website
               <div className="md:w-1/3 lg:w-1/2 m-auto my-4 bg-background-semi-transparent shadow-sm border border-slate-200 rounded-lg p-2">
                 <div className="p-3 text-center">
@@ -91,7 +91,7 @@ const Home = () => {
                     </h5>
                   </div>
                   <p className="block text-slate-600 leading-normal font-light mb-4 text-center">
-                    Munchies is a meal planning application that lets you search for ingredients and recipes and plan your meals for the week. 
+                    Munchies is a meal planning application that lets you search for ingredients and recipes and plan your meals for the week.
                   </p>
                 </div>
               </div>
@@ -124,8 +124,7 @@ const Home = () => {
                             meal.strYoutube,
                             meal.ingredients,
                             (e.target as HTMLSelectElement).value
-                          )}
-                        >
+                          )}>
                           <option value="" >Choose a Day to Save</option>
                           <option value="sunday">Sunday</option>
                           <option value="monday">Monday</option>
@@ -142,27 +141,27 @@ const Home = () => {
                     </div>
                   </div>
                 ) : (
-                  <p style={{color: 'whitesmoke'}}>No meals found for "{query}"!</p>
+                  <p style={{ color: 'whitesmoke' }}>No meals found for "{query}"!</p>
                 )
               ) : null}
             </div>
           )}
         </div>
       </div>
-      {click ? 
-      <div className='save-message'>
-        {status ? 
-        <div>
-          <p>Recipe Saved!</p> 
-          <div className='save-message-slider'></div>
-        </div>
-        : 
-        <div>
-          <p>Recipe failed to save.</p>
-          <div className='save-message-slider'></div>
-        </div>
-        }
-      </div> : <div></div>}
+      {click ?
+        <div className='save-message'>
+          {status ?
+            <div>
+              <p>Recipe Saved!</p>
+              <div className='save-message-slider'></div>
+            </div>
+            :
+            <div>
+              <p>Recipe failed to save.</p>
+              <div className='save-message-slider'></div>
+            </div>
+          }
+        </div> : <div></div>}
       <div className='padding py-6'></div>
     </main>
   );
