@@ -29,9 +29,9 @@ const Week: React.FC<WeekProps> = ({ user }) => {
     };
 
     return <div className='flex flex-col items-center justify-center'>
-        <h1 className='bg-background-semi-transparent !ml-3 !my-5 w-max align-center p-3' style={{border: '1px solid #ccc',borderRadius: '8px',margin: '8px 0',padding: '12px',}}
+        <h1 className='bg-background-semi-transparent !my-5 w-max align-center p-3 border-2 border-accent shadow-md shadow-accent-dark rounded-lg'
         >{user.name}'s Meal Plan:</h1>
-            <div className="day-card w-1/2 min-w-[300px] mx-auto">
+            <div className="day-card w-9/10 min-w-[300px] mx-aut0">
                 <ul>
                     {[
                         { name: 'Sunday', key: 'sunday' },
@@ -43,14 +43,8 @@ const Week: React.FC<WeekProps> = ({ user }) => {
                         { name: 'Saturday', key: 'saturday' },
                     ].map(day => (
                         <div
-                            className="day-card bg-background-semi-transparent text-font"
+                            className="day-card my-2 bg-background-semi-transparent border-2 border-accent rounded-lg shadow-md shadow-accent-dark text-font"
                             key={day.key}
-                            style={{
-                                border: '1px solid #ccc',
-                                borderRadius: '8px',
-                                margin: '8px 0',
-                                padding: '12px',
-                            }}
                         >
                             <h2>{day.name}</h2>
                             <ul>

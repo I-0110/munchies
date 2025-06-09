@@ -48,26 +48,29 @@ const GroceryList = () => {
     const combinedList = Object.entries(ingredientMap);
 
     return (
-        <div>
-            <h2>Grocery List</h2>
-            <ul>
-                {combinedList.length > 0 ? (
-                    combinedList.map(([name, units]) => (
-                        <li key={name}>
-                            {name}:{" "}
-                            {Object.entries(units)
-                                .map(
-                                    ([unit, amount]) =>
-                                        `${amount % 1 === 0 ? amount : amount.toFixed(2)}${unit ? " " + unit : ""}`
-                                )
-                                .join(" + ")}
-                        </li>
-                    ))
-                ) : (
-                    <li>No ingredients/recipes found.</li>
-                )}
-            </ul>
-        </div>
+        <section className="grocery-list h-full flex justify-center items-center my-10">
+            <div className="bg-background-semi-transparent w-9/10 md:w-2/3 lg:w-1/2 p-6 flex-colum justify-center content-center">
+                <h2 className="text-center">Grocery List:</h2>
+                <ul>
+                    {combinedList.length > 0 ? (
+                        combinedList.map(([name, units]) => (
+                            <li className="my-2 p-2 py-3 px-1 sm:py-2 sm:px-3 bg-background border-3 border-accent-dark rounded-sm shadow-accent shadow-md"
+                                key={name}>
+                                {name}:{" "}
+                                {Object.entries(units)
+                                    .map(
+                                        ([unit, amount]) =>
+                                            `${amount % 1 === 0 ? amount : amount.toFixed(2)}${unit ? " " + unit : ""}`
+                                    )
+                                    .join(" + ")}
+                            </li>
+                        ))
+                    ) : (
+                        <li>No ingredients/recipes found.</li>
+                    )}
+                </ul>
+            </div>
+        </section>
     );
 };
 

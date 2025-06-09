@@ -132,20 +132,20 @@ img {
  * 1. Change the font styles in all browsers.
  * 2. Remove the margin in Firefox and Safari.
  */
-button,
+/* button,
 input,
 optgroup,
 select,
 textarea {
   font-family: inherit;
   /* 1 */
-  font-size: 100%;
+  /* font-size: 100%; */
   /* 1 */
-  line-height: 1.15;
+  /* line-height: 1.15; */
   /* 1 */
-  margin: 0;
+  /* margin: 0; */
   /* 2 */
-}
+/* } */
 
 /**
  * Show the overflow in IE.
@@ -398,12 +398,12 @@ label {
   display: inline-block;
 }
 
-input,
+/* input,
 select,
 textarea,
 button {
   margin: 0;
-}
+} */
 
 /* a {
   text-decoration: none;
