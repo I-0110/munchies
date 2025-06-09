@@ -77,7 +77,7 @@ const Home = () => {
           {searchLoading ? (
             <div className='bg-background-semi-transparent border-3 border-accent shadow-lg shadow-accent w-max m-auto p-3'>Loading...</div>
           ) : (
-            <div className='flex flex-column justify-center align-center'>
+            <div className='flex-column'>
               <SearchInput value={query} onChange={setQuery} handleSearch={handleSearch} />
 
               {result ? (
