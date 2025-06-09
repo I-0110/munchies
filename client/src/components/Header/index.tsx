@@ -23,8 +23,17 @@ const Header = () => {
           Plan your next meal. One meal at a time!
         </h2>
         <div className='min-w-full flex justify-end md:pr-3'>
-          {Auth.loggedIn() ? (
+          {Auth.loggedIn() ? path==='/me' ? (
             <>
+              <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/me">
+                View My Recipes
+              </Link>
+              <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/add">
+                Add My Recipe
+              </Link>
+            </>
+           ) : 
+            (<>
               <Link className="bg-button text-background px-4 py-2 rounded-t-lg border-2 border-accent inset-shadow-sm/80 inset-shadow-accent focus:bg-button-focus hover:bg-button-dark" to="/me">
                 View My Recipes
               </Link>

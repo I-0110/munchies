@@ -30,7 +30,7 @@ const Week: React.FC<WeekProps> = ({ user }) => {
 
     return <div className='flex flex-col items-center justify-center'>
         <h1 className='bg-background-semi-transparent !my-5 w-max align-center p-3 border-2 border-accent shadow-md shadow-accent-dark rounded-lg'
-        >{user.name}'s Meal Plan:</h1>
+        >Here's Your Plan</h1>
             <div className="day-card w-9/10 min-w-[300px] mx-aut0">
                 <ul>
                     {[
