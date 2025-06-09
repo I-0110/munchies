@@ -1,24 +1,11 @@
 import { useState, useEffect } from 'react';
-// import { FormEvent } from 'react';
-// import Auth from '../utils/auth';
-
 import { useParams } from "react-router-dom";
-
-type Meal = {
-    idMeal: string;
-    strMeal: string;
-    strCategory: string;
-    strInstructions: string;
-    strMealThumb: string;
-    strYoutube: string;
-    ingredients?: Ingredient[];
-    [key: string]: any;
-};
-
-type Ingredient = {
-    ingredient: string;
-    measurement: string;
-};
+// import { FormEvent } from 'react';
+import { Recipe, Ingredient } from '../utils/models/Recipe';
+import { useMutation } from '@apollo/client';
+import { ADD_RECIPE } from '../utils/mutations';
+import { QUERY_ME } from '../utils/queries';
+import Auth from '../utils/auth';
 
 function extractIngredients(meal: Record<string, any>): Ingredient[] {
     const ingredients: Ingredient[] = [];
@@ -30,7 +17,7 @@ function extractIngredients(meal: Record<string, any>): Ingredient[] {
         if (ingredient && ingredient.trim()) {
             ingredients.push({
                 ingredient: ingredient.trim(),
-                measurement: measurement ? measurement.trim() : '',
+                measure: measurement ? measurement.trim() : '',
             });
         }
     }
@@ -95,15 +82,30 @@ function convertTemperaturesInText(text: string, useCelsius: boolean): string {
 
 const RecipePage = () => {
     const { name } = useParams<{ name: string }>();
-    const [meal, setMeal] = useState<Meal | null>(null);
+    const [meal, setMeal] = useState<Recipe | null>(null);
 
     // useState for measurement metric. false = U.S., true = Metric
     // const [useMetric, setUseMetric] = useState(false); 
     // useState to convert Celsius to Fahrenheit. false = F, true = C
     // const [useTemp, setUseTemp] = useState(false);
 
+    const [status, setStatus] = useState<Boolean>(false)
+    const [click, setClick] = useState<Boolean>(false)
+
     const [loading, setLoading] = useState(true);
     const [toPrint, setToPrint] = useState(false);
+
+    const [addRecipe] = useMutation(ADD_RECIPE, {
+        refetchQueries: [{ query: QUERY_ME }],
+    });
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setStatus(false)
+            setClick(false)
+        }, 5000);
+        return () => clearTimeout(timer);
+    }, [click]);
 
     useEffect(() => {
         const fetchMeal = async () => {
@@ -127,6 +129,35 @@ const RecipePage = () => {
 
         fetchMeal();
     }, [name]);
+
+    // Triger to save recipe per day
+    const handleSave = async (mealId: string, name: string, category: string, instructions: string, image_url: string, video_url: string, ingredients: Ingredient[], day: string) => {
+        try {
+            setClick(true)
+            const response = await addRecipe({
+                variables: {
+                    input: {
+                        day,
+                        mealId,
+                        name,
+                        category,
+                        instructions,
+                        image_url,
+                        video_url,
+                        ingredients: ingredients
+                    }
+                },
+            });
+
+            if (!response) {
+                throw new Error("Recipe did not save!");
+            }
+            setStatus(true)
+            console.log("Recipe successfully saved!");
+        } catch (err) {
+            console.error("Recipe failed to save...", err);
+        }
+    };
 
     // Trigger print mode
     const handlePrint = () => {
@@ -161,7 +192,7 @@ const RecipePage = () => {
                 <ul>
                     {meal.ingredients?.map((item, index) => (
                         <li key={index}>
-                            {item.measurement} {item.ingredient}
+                            {item.measure} {item.ingredient}
                         </li>
                     ))}
                 </ul>
@@ -169,70 +200,115 @@ const RecipePage = () => {
                 <p>{meal.strInstructions}</p>
             </div>
         );
-    } else { 
+    } else {
         // Regular UI with buttons and videos
-    return (
-        <div className='bg-background-semi-transparent' style={{ padding: 20 }}>
-            <h1 className=''>{meal.strMeal}</h1> 
-            <h4><strong>Category:</strong> {meal.strCategory}</h4>
-            <button onClick={handlePrint} style={{ margin: '10px 0' }}>
-            🖨️ Print Recipe
-            </button>
-            <img
-                src={meal.strMealThumb}
-                alt={meal.strMeal}
-                style={{ width: 300, borderRadius: 8 }}
-            />
+        return (
+            <div className='bg-background-semi-transparent' style={{ padding: 20 }}>
+                <h1 className=''>{meal.strMeal}</h1>
+                <h4><strong>Category:</strong> {meal.strCategory}</h4>
+                <button onClick={handlePrint} style={{ margin: '10px 0' }}>
+                    🖨️ Print Recipe
+                </button>
+                {Auth.loggedIn() ? <select
+                    className='bg-background-semi-transparent'
+                    name="choice"
+                    multiple={false}
+                    onChange={(e) => handleSave(
+                        meal.idMeal.toString(),
+                        meal.strMeal,
+                        meal.strCategory,
+                        meal.strInstructions,
+                        meal.strMealThumb,
+                        meal.strYoutube,
+                        meal.ingredients,
+                        (e.target as HTMLSelectElement).value
+                    )}
+                >
+                    <option value="" >Choose a Day to Save</option>
+                    <option value="sunday">Sunday</option>
+                    <option value="monday">Monday</option>
+                    <option value="tuesday">Tuesday</option>
+                    <option value="wednesday">Wednesday</option>
+                    <option value="thursday">Thursday</option>
+                    <option value="friday">Friday</option>
+                    <option value="saturday">Saturday</option>
+                </select> :
+                    <p>
+                        <a href="/login" className="underline text-blue-500">Log in to save this recipe.</a>
+                    </p>
+                })
+                <img
+                    src={meal.strMealThumb}
+                    alt={meal.strMeal}
+                    style={{ width: 300, borderRadius: 8 }}
+                />
 
-            {/* <button onClick={() => setUseMetric(prev => !prev)}>
+                {/* <button onClick={() => setUseMetric(prev => !prev)}>
                 Switch to {useMetric ? 'U.S.' : 'Metric'} units
             </button> */}
 
-            <h3><strong>Ingredients:</strong></h3>
-            <ul>
-                {meal.ingredients?.map((item, index) =>
-                    // Uncomment if you want to use unit conversions:
-                    // {
-                    //     const converted = useMetric
-                    //         ? convertToMetric(item.measurement) 
-                    //         : convertToImperial(item.measurement);
-                    //     return (
-                    //         <li key={index}>{converted} {item.ingredient}</li>
-                    //     );
-                    // }
+                <h3><strong>Ingredients:</strong></h3>
+                <ul>
+                    {meal.ingredients?.map((item, index) =>
+                        // Uncomment if you want to use unit conversions:
+                        // {
+                        //     const converted = useMetric
+                        //         ? convertToMetric(item.measurement) 
+                        //         : convertToImperial(item.measurement);
+                        //     return (
+                        //         <li key={index}>{converted} {item.ingredient}</li>
+                        //     );
+                        // }
 
-                    // Basic version (no conversion)
-                    <li key={index}>
-                        {item.measurement} {item.ingredient}
-                    </li>
-                )}
-            </ul>
+                        // Basic version (no conversion)
+                        <li key={index}>
+                            {item.measure} {item.ingredient}
+                        </li>
+                    )}
+                </ul>
 
-            <h3><strong>Instructions:</strong></h3>
-            <p>{meal.strInstructions}</p>
+                <h3><strong>Instructions:</strong></h3>
+                <p>{meal.strInstructions}</p>
 
-            {/* <button onClick={() => setUseTemp(prev => !prev)}>
+                {/* <button onClick={() => setUseTemp(prev => !prev)}>
                 Switch to {useTemp ? '°F' : '°C'}
             </button>
             <p>
                 {convertTemperaturesInText(meal.strInstructions, useTemp)}
             </p> */}
 
-            {meal.strYoutube && (
-                <div>
-                    <h3><strong>Video Tutorial for: {meal.strMeal}</strong></h3>
-                    <iframe
-                        width="600"
-                        height="400"
-                        src={`https://www.youtube.com/embed/${new URLSearchParams(new URL(meal.strYoutube).search).get('v')}`}
-                        title={meal.strMeal}
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                    ></iframe>
-                </div>
-            )}
-        </div>
-    )};
+                {meal.strYoutube && (
+                    <div>
+                        <h3><strong>Video Tutorial for: {meal.strMeal}</strong></h3>
+                        <iframe
+                            width="600"
+                            height="400"
+                            src={`https://www.youtube.com/embed/${new URLSearchParams(new URL(meal.strYoutube).search).get('v')}`}
+                            title={meal.strMeal}
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        ></iframe>
+                    </div>
+                )}
+
+                {click ?
+                    <div className='save-message'>
+                        {status ?
+                            <div>
+                                <p>Recipe Saved!</p>
+                                <div className='save-message-slider'></div>
+                            </div>
+                            :
+                            <div>
+                                <p>Recipe failed to save.</p>
+                                <div className='save-message-slider'></div>
+                            </div>
+                        }
+                    </div> : <div></div>}
+                <div className='padding py-6'></div>
+            </div>
+        )
+    };
 };
 
 export default RecipePage;
