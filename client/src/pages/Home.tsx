@@ -73,9 +73,9 @@ const Home = () => {
   return (
     <main className='h-screen w-full px-5 py-5'>
       <div>
-        <div className=''>
+        <div>
           {searchLoading ? (
-            <div>Loading...</div>
+            <div className='bg-background-semi-transparent border-3 border-accent shadow-lg shadow-accent w-max m-auto p-3'>Loading...</div>
           ) : (
             <div className='flex-column'>
               <SearchInput value={query} onChange={setQuery} handleSearch={handleSearch}/>
@@ -163,6 +163,7 @@ const Home = () => {
         </div>
         }
       </div> : <div></div>}
+      <div className='padding py-6'></div>
     </main>
   );
 };
