@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 // import { FormEvent } from 'react';
 // import Auth from '../utils/auth';
-
 import { useParams } from "react-router-dom";
 
 type Meal = {
@@ -178,16 +177,15 @@ const RecipePage = () => {
             <button onClick={handlePrint} style={{ margin: '10px 0' }}>
             🖨️ Print Recipe
             </button>
+            
             <img
                 src={meal.strMealThumb}
                 alt={meal.strMeal}
                 style={{ width: 300, borderRadius: 8 }}
             />
-
             {/* <button onClick={() => setUseMetric(prev => !prev)}>
                 Switch to {useMetric ? 'U.S.' : 'Metric'} units
             </button> */}
-
             <h3><strong>Ingredients:</strong></h3>
             <ul>
                 {meal.ingredients?.map((item, index) =>
@@ -235,6 +233,4 @@ const RecipePage = () => {
     )};
 };
 
-export default RecipePage;
-
-
+export default RecipePage;    
